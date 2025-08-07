@@ -1,0 +1,5 @@
+set title 'all stats'
+#set terminal postscript color solid
+#set output 'stat.ps'
+plot 'alldata.dat' using 1:2 title 'temperature' with lines,'alldata.dat' using 1:3 title 'cost' with lines,'alldata.dat' using 1:4 title 'rowcost' with lines,'alldata.dat' using 1:5 title 'bincost' with lines,'alldata.dat' using 1:6 title 'netcost' with lines,'alldata.dat' using 1:7 title 'success ratio' with lines,'alldata.dat' using 1:8 title 'dist' with lines,'alldata.dat' using 1:9 title 'delta' with lines
+pause -1 'press any key'

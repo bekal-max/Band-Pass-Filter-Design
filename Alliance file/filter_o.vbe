@@ -1,0 +1,4824 @@
+-- VHDL data flow description generated from `filter_o`
+--		date : Thu Aug 20 11:47:25 2020
+
+
+-- Entity Declaration
+
+ENTITY filter_o IS
+  PORT (
+  clk : in BIT;	-- clk
+  clk_enable : in BIT;	-- clk_enable
+  reset : in BIT;	-- reset
+  filter_in : in bit_vector(7 DOWNTO 0) ;	-- filter_in
+  filter_out : out bit_vector(15 DOWNTO 0) ;	-- filter_out
+  vdd : in BIT;	-- vdd
+  vss : in BIT	-- vss
+  );
+END filter_o;
+
+
+-- Architecture Declaration
+
+ARCHITECTURE behaviour_data_flow OF filter_o IS
+  SIGNAL product16 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product16
+  SIGNAL mul_temp : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp
+  SIGNAL product15 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product15
+  SIGNAL mul_temp_1 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_1
+  SIGNAL product14 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product14
+  SIGNAL product13 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product13
+  SIGNAL product12 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product12
+  SIGNAL product11 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product11
+  SIGNAL mul_temp_2 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_2
+  SIGNAL product10 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product10
+  SIGNAL mul_temp_3 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_3
+  SIGNAL product9 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product9
+  SIGNAL mul_temp_4 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_4
+  SIGNAL product8 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product8
+  SIGNAL mul_temp_5 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_5
+  SIGNAL product7 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product7
+  SIGNAL mul_temp_6 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_6
+  SIGNAL product6 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product6
+  SIGNAL mul_temp_7 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_7
+  SIGNAL product5 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product5
+  SIGNAL product4 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product4
+  SIGNAL product3 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product3
+  SIGNAL product2 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product2
+  SIGNAL mul_temp_8 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_8
+  SIGNAL product1_cast : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- product1_cast
+  SIGNAL product1 : REG_VECTOR(12 DOWNTO 0) REGISTER;	-- product1
+  SIGNAL mul_temp_9 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- mul_temp_9
+  SIGNAL sum1 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum1
+  SIGNAL add_temp : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp
+  SIGNAL sum2 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum2
+  SIGNAL add_temp_1 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_1
+  SIGNAL sum3 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum3
+  SIGNAL add_temp_2 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_2
+  SIGNAL sum4 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum4
+  SIGNAL add_temp_3 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_3
+  SIGNAL sum5 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum5
+  SIGNAL add_temp_4 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_4
+  SIGNAL sum6 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum6
+  SIGNAL add_temp_5 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_5
+  SIGNAL sum7 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum7
+  SIGNAL add_temp_6 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_6
+  SIGNAL sum8 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum8
+  SIGNAL add_temp_7 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_7
+  SIGNAL sum9 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum9
+  SIGNAL add_temp_8 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_8
+  SIGNAL sum10 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum10
+  SIGNAL add_temp_9 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_9
+  SIGNAL sum11 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum11
+  SIGNAL add_temp_10 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_10
+  SIGNAL sum12 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum12
+  SIGNAL add_temp_11 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_11
+  SIGNAL sum13 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum13
+  SIGNAL add_temp_12 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_12
+  SIGNAL sum14 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum14
+  SIGNAL add_temp_13 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_13
+  SIGNAL sum15 : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- sum15
+  SIGNAL add_temp_14 : REG_VECTOR(16 DOWNTO 0) REGISTER;	-- add_temp_14
+  SIGNAL output_typeconvert : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- output_typeconvert
+  SIGNAL output_register : REG_VECTOR(15 DOWNTO 0) REGISTER;	-- output_register
+  SIGNAL rtlcarry_154_11 : BIT;		-- rtlcarry_154_11
+  SIGNAL rtlcarry_154_10 : BIT;		-- rtlcarry_154_10
+  SIGNAL rtlcarry_154_9 : BIT;		-- rtlcarry_154_9
+  SIGNAL rtlcarry_154_8 : BIT;		-- rtlcarry_154_8
+  SIGNAL rtlcarry_154_7 : BIT;		-- rtlcarry_154_7
+  SIGNAL rtlcarry_154_6 : BIT;		-- rtlcarry_154_6
+  SIGNAL rtlcarry_154_5 : BIT;		-- rtlcarry_154_5
+  SIGNAL rtlcarry_154_4 : BIT;		-- rtlcarry_154_4
+  SIGNAL rtlcarry_154_3 : BIT;		-- rtlcarry_154_3
+  SIGNAL rtlcarry_153_11 : BIT;		-- rtlcarry_153_11
+  SIGNAL rtlcarry_153_10 : BIT;		-- rtlcarry_153_10
+  SIGNAL rtlcarry_153_9 : BIT;		-- rtlcarry_153_9
+  SIGNAL rtlcarry_153_8 : BIT;		-- rtlcarry_153_8
+  SIGNAL rtlcarry_153_7 : BIT;		-- rtlcarry_153_7
+  SIGNAL rtlcarry_153_6 : BIT;		-- rtlcarry_153_6
+  SIGNAL rtlcarry_153_5 : BIT;		-- rtlcarry_153_5
+  SIGNAL rtlcarry_153_4 : BIT;		-- rtlcarry_153_4
+  SIGNAL rtlcarry_153_3 : BIT;		-- rtlcarry_153_3
+  SIGNAL rtlcarry_152_11 : BIT;		-- rtlcarry_152_11
+  SIGNAL rtlcarry_152_10 : BIT;		-- rtlcarry_152_10
+  SIGNAL rtlcarry_152_9 : BIT;		-- rtlcarry_152_9
+  SIGNAL rtlcarry_152_8 : BIT;		-- rtlcarry_152_8
+  SIGNAL rtlcarry_152_7 : BIT;		-- rtlcarry_152_7
+  SIGNAL rtlcarry_152_6 : BIT;		-- rtlcarry_152_6
+  SIGNAL rtlcarry_152_5 : BIT;		-- rtlcarry_152_5
+  SIGNAL rtlcarry_152_4 : BIT;		-- rtlcarry_152_4
+  SIGNAL rtlcarry_152_3 : BIT;		-- rtlcarry_152_3
+  SIGNAL rtlcarry_151_11 : BIT;		-- rtlcarry_151_11
+  SIGNAL rtlcarry_151_10 : BIT;		-- rtlcarry_151_10
+  SIGNAL rtlcarry_151_9 : BIT;		-- rtlcarry_151_9
+  SIGNAL rtlcarry_151_8 : BIT;		-- rtlcarry_151_8
+  SIGNAL rtlcarry_151_7 : BIT;		-- rtlcarry_151_7
+  SIGNAL rtlcarry_151_6 : BIT;		-- rtlcarry_151_6
+  SIGNAL rtlcarry_151_5 : BIT;		-- rtlcarry_151_5
+  SIGNAL rtlcarry_151_4 : BIT;		-- rtlcarry_151_4
+  SIGNAL rtlcarry_151_3 : BIT;		-- rtlcarry_151_3
+  SIGNAL rtlcarry_150_11 : BIT;		-- rtlcarry_150_11
+  SIGNAL rtlcarry_150_10 : BIT;		-- rtlcarry_150_10
+  SIGNAL rtlcarry_150_9 : BIT;		-- rtlcarry_150_9
+  SIGNAL rtlcarry_150_8 : BIT;		-- rtlcarry_150_8
+  SIGNAL rtlcarry_150_7 : BIT;		-- rtlcarry_150_7
+  SIGNAL rtlcarry_150_6 : BIT;		-- rtlcarry_150_6
+  SIGNAL rtlcarry_150_5 : BIT;		-- rtlcarry_150_5
+  SIGNAL rtlcarry_150_4 : BIT;		-- rtlcarry_150_4
+  SIGNAL rtlcarry_150_3 : BIT;		-- rtlcarry_150_3
+  SIGNAL rtlcarry_149_11 : BIT;		-- rtlcarry_149_11
+  SIGNAL rtlcarry_149_10 : BIT;		-- rtlcarry_149_10
+  SIGNAL rtlcarry_149_9 : BIT;		-- rtlcarry_149_9
+  SIGNAL rtlcarry_149_8 : BIT;		-- rtlcarry_149_8
+  SIGNAL rtlcarry_149_7 : BIT;		-- rtlcarry_149_7
+  SIGNAL rtlcarry_149_6 : BIT;		-- rtlcarry_149_6
+  SIGNAL rtlcarry_149_5 : BIT;		-- rtlcarry_149_5
+  SIGNAL rtlcarry_149_4 : BIT;		-- rtlcarry_149_4
+  SIGNAL rtlcarry_149_3 : BIT;		-- rtlcarry_149_3
+  SIGNAL rtlcarry_148_11 : BIT;		-- rtlcarry_148_11
+  SIGNAL rtlcarry_148_10 : BIT;		-- rtlcarry_148_10
+  SIGNAL rtlcarry_148_9 : BIT;		-- rtlcarry_148_9
+  SIGNAL rtlcarry_148_8 : BIT;		-- rtlcarry_148_8
+  SIGNAL rtlcarry_148_7 : BIT;		-- rtlcarry_148_7
+  SIGNAL rtlcarry_148_6 : BIT;		-- rtlcarry_148_6
+  SIGNAL rtlcarry_148_5 : BIT;		-- rtlcarry_148_5
+  SIGNAL rtlcarry_148_4 : BIT;		-- rtlcarry_148_4
+  SIGNAL rtlcarry_148_3 : BIT;		-- rtlcarry_148_3
+  SIGNAL rtlcarry_147_11 : BIT;		-- rtlcarry_147_11
+  SIGNAL rtlcarry_147_10 : BIT;		-- rtlcarry_147_10
+  SIGNAL rtlcarry_147_9 : BIT;		-- rtlcarry_147_9
+  SIGNAL rtlcarry_147_8 : BIT;		-- rtlcarry_147_8
+  SIGNAL rtlcarry_147_7 : BIT;		-- rtlcarry_147_7
+  SIGNAL rtlcarry_147_6 : BIT;		-- rtlcarry_147_6
+  SIGNAL rtlcarry_147_5 : BIT;		-- rtlcarry_147_5
+  SIGNAL rtlcarry_147_4 : BIT;		-- rtlcarry_147_4
+  SIGNAL rtlcarry_147_3 : BIT;		-- rtlcarry_147_3
+  SIGNAL rtlcarry_146_11 : BIT;		-- rtlcarry_146_11
+  SIGNAL rtlcarry_146_10 : BIT;		-- rtlcarry_146_10
+  SIGNAL rtlcarry_146_9 : BIT;		-- rtlcarry_146_9
+  SIGNAL rtlcarry_146_8 : BIT;		-- rtlcarry_146_8
+  SIGNAL rtlcarry_146_7 : BIT;		-- rtlcarry_146_7
+  SIGNAL rtlcarry_146_6 : BIT;		-- rtlcarry_146_6
+  SIGNAL rtlcarry_146_5 : BIT;		-- rtlcarry_146_5
+  SIGNAL rtlcarry_146_4 : BIT;		-- rtlcarry_146_4
+  SIGNAL rtlcarry_146_3 : BIT;		-- rtlcarry_146_3
+  SIGNAL rtlcarry_145_11 : BIT;		-- rtlcarry_145_11
+  SIGNAL rtlcarry_145_10 : BIT;		-- rtlcarry_145_10
+  SIGNAL rtlcarry_145_9 : BIT;		-- rtlcarry_145_9
+  SIGNAL rtlcarry_145_8 : BIT;		-- rtlcarry_145_8
+  SIGNAL rtlcarry_145_7 : BIT;		-- rtlcarry_145_7
+  SIGNAL rtlcarry_145_6 : BIT;		-- rtlcarry_145_6
+  SIGNAL rtlcarry_145_5 : BIT;		-- rtlcarry_145_5
+  SIGNAL rtlcarry_145_4 : BIT;		-- rtlcarry_145_4
+  SIGNAL rtlcarry_145_3 : BIT;		-- rtlcarry_145_3
+  SIGNAL rtlcarry_142_15 : BIT;		-- rtlcarry_142_15
+  SIGNAL rtlcarry_142_14 : BIT;		-- rtlcarry_142_14
+  SIGNAL rtlcarry_142_13 : BIT;		-- rtlcarry_142_13
+  SIGNAL rtlcarry_142_12 : BIT;		-- rtlcarry_142_12
+  SIGNAL rtlcarry_142_11 : BIT;		-- rtlcarry_142_11
+  SIGNAL rtlcarry_142_10 : BIT;		-- rtlcarry_142_10
+  SIGNAL rtlcarry_142_9 : BIT;		-- rtlcarry_142_9
+  SIGNAL rtlcarry_142_8 : BIT;		-- rtlcarry_142_8
+  SIGNAL rtlcarry_142_7 : BIT;		-- rtlcarry_142_7
+  SIGNAL rtlcarry_142_6 : BIT;		-- rtlcarry_142_6
+  SIGNAL rtlcarry_142_5 : BIT;		-- rtlcarry_142_5
+  SIGNAL rtlcarry_142_4 : BIT;		-- rtlcarry_142_4
+  SIGNAL rtlcarry_142_3 : BIT;		-- rtlcarry_142_3
+  SIGNAL rtlcarry_142_2 : BIT;		-- rtlcarry_142_2
+  SIGNAL rtlcarry_142_1 : BIT;		-- rtlcarry_142_1
+  SIGNAL rtlcarry_139_15 : BIT;		-- rtlcarry_139_15
+  SIGNAL rtlcarry_139_14 : BIT;		-- rtlcarry_139_14
+  SIGNAL rtlcarry_139_13 : BIT;		-- rtlcarry_139_13
+  SIGNAL rtlcarry_139_12 : BIT;		-- rtlcarry_139_12
+  SIGNAL rtlcarry_139_11 : BIT;		-- rtlcarry_139_11
+  SIGNAL rtlcarry_139_10 : BIT;		-- rtlcarry_139_10
+  SIGNAL rtlcarry_139_9 : BIT;		-- rtlcarry_139_9
+  SIGNAL rtlcarry_139_8 : BIT;		-- rtlcarry_139_8
+  SIGNAL rtlcarry_139_7 : BIT;		-- rtlcarry_139_7
+  SIGNAL rtlcarry_139_6 : BIT;		-- rtlcarry_139_6
+  SIGNAL rtlcarry_139_5 : BIT;		-- rtlcarry_139_5
+  SIGNAL rtlcarry_139_4 : BIT;		-- rtlcarry_139_4
+  SIGNAL rtlcarry_139_3 : BIT;		-- rtlcarry_139_3
+  SIGNAL rtlcarry_139_2 : BIT;		-- rtlcarry_139_2
+  SIGNAL rtlcarry_139_1 : BIT;		-- rtlcarry_139_1
+  SIGNAL rtlcarry_136_15 : BIT;		-- rtlcarry_136_15
+  SIGNAL rtlcarry_136_14 : BIT;		-- rtlcarry_136_14
+  SIGNAL rtlcarry_136_13 : BIT;		-- rtlcarry_136_13
+  SIGNAL rtlcarry_136_12 : BIT;		-- rtlcarry_136_12
+  SIGNAL rtlcarry_136_11 : BIT;		-- rtlcarry_136_11
+  SIGNAL rtlcarry_136_10 : BIT;		-- rtlcarry_136_10
+  SIGNAL rtlcarry_136_9 : BIT;		-- rtlcarry_136_9
+  SIGNAL rtlcarry_136_8 : BIT;		-- rtlcarry_136_8
+  SIGNAL rtlcarry_136_7 : BIT;		-- rtlcarry_136_7
+  SIGNAL rtlcarry_136_6 : BIT;		-- rtlcarry_136_6
+  SIGNAL rtlcarry_136_5 : BIT;		-- rtlcarry_136_5
+  SIGNAL rtlcarry_136_4 : BIT;		-- rtlcarry_136_4
+  SIGNAL rtlcarry_136_3 : BIT;		-- rtlcarry_136_3
+  SIGNAL rtlcarry_136_2 : BIT;		-- rtlcarry_136_2
+  SIGNAL rtlcarry_136_1 : BIT;		-- rtlcarry_136_1
+  SIGNAL rtlcarry_133_15 : BIT;		-- rtlcarry_133_15
+  SIGNAL rtlcarry_133_14 : BIT;		-- rtlcarry_133_14
+  SIGNAL rtlcarry_133_13 : BIT;		-- rtlcarry_133_13
+  SIGNAL rtlcarry_133_12 : BIT;		-- rtlcarry_133_12
+  SIGNAL rtlcarry_133_11 : BIT;		-- rtlcarry_133_11
+  SIGNAL rtlcarry_133_10 : BIT;		-- rtlcarry_133_10
+  SIGNAL rtlcarry_133_9 : BIT;		-- rtlcarry_133_9
+  SIGNAL rtlcarry_133_8 : BIT;		-- rtlcarry_133_8
+  SIGNAL rtlcarry_133_7 : BIT;		-- rtlcarry_133_7
+  SIGNAL rtlcarry_133_6 : BIT;		-- rtlcarry_133_6
+  SIGNAL rtlcarry_133_5 : BIT;		-- rtlcarry_133_5
+  SIGNAL rtlcarry_133_4 : BIT;		-- rtlcarry_133_4
+  SIGNAL rtlcarry_133_3 : BIT;		-- rtlcarry_133_3
+  SIGNAL rtlcarry_133_2 : BIT;		-- rtlcarry_133_2
+  SIGNAL rtlcarry_133_1 : BIT;		-- rtlcarry_133_1
+  SIGNAL rtlcarry_130_15 : BIT;		-- rtlcarry_130_15
+  SIGNAL rtlcarry_130_14 : BIT;		-- rtlcarry_130_14
+  SIGNAL rtlcarry_130_13 : BIT;		-- rtlcarry_130_13
+  SIGNAL rtlcarry_130_12 : BIT;		-- rtlcarry_130_12
+  SIGNAL rtlcarry_130_11 : BIT;		-- rtlcarry_130_11
+  SIGNAL rtlcarry_130_10 : BIT;		-- rtlcarry_130_10
+  SIGNAL rtlcarry_130_9 : BIT;		-- rtlcarry_130_9
+  SIGNAL rtlcarry_130_8 : BIT;		-- rtlcarry_130_8
+  SIGNAL rtlcarry_130_7 : BIT;		-- rtlcarry_130_7
+  SIGNAL rtlcarry_130_6 : BIT;		-- rtlcarry_130_6
+  SIGNAL rtlcarry_130_5 : BIT;		-- rtlcarry_130_5
+  SIGNAL rtlcarry_130_4 : BIT;		-- rtlcarry_130_4
+  SIGNAL rtlcarry_130_3 : BIT;		-- rtlcarry_130_3
+  SIGNAL rtlcarry_130_2 : BIT;		-- rtlcarry_130_2
+  SIGNAL rtlcarry_130_1 : BIT;		-- rtlcarry_130_1
+  SIGNAL rtlcarry_127_15 : BIT;		-- rtlcarry_127_15
+  SIGNAL rtlcarry_127_14 : BIT;		-- rtlcarry_127_14
+  SIGNAL rtlcarry_127_13 : BIT;		-- rtlcarry_127_13
+  SIGNAL rtlcarry_127_12 : BIT;		-- rtlcarry_127_12
+  SIGNAL rtlcarry_127_11 : BIT;		-- rtlcarry_127_11
+  SIGNAL rtlcarry_127_10 : BIT;		-- rtlcarry_127_10
+  SIGNAL rtlcarry_127_9 : BIT;		-- rtlcarry_127_9
+  SIGNAL rtlcarry_127_8 : BIT;		-- rtlcarry_127_8
+  SIGNAL rtlcarry_127_7 : BIT;		-- rtlcarry_127_7
+  SIGNAL rtlcarry_127_6 : BIT;		-- rtlcarry_127_6
+  SIGNAL rtlcarry_127_5 : BIT;		-- rtlcarry_127_5
+  SIGNAL rtlcarry_127_4 : BIT;		-- rtlcarry_127_4
+  SIGNAL rtlcarry_127_3 : BIT;		-- rtlcarry_127_3
+  SIGNAL rtlcarry_127_2 : BIT;		-- rtlcarry_127_2
+  SIGNAL rtlcarry_127_1 : BIT;		-- rtlcarry_127_1
+  SIGNAL rtlcarry_124_15 : BIT;		-- rtlcarry_124_15
+  SIGNAL rtlcarry_124_14 : BIT;		-- rtlcarry_124_14
+  SIGNAL rtlcarry_124_13 : BIT;		-- rtlcarry_124_13
+  SIGNAL rtlcarry_124_12 : BIT;		-- rtlcarry_124_12
+  SIGNAL rtlcarry_124_11 : BIT;		-- rtlcarry_124_11
+  SIGNAL rtlcarry_124_10 : BIT;		-- rtlcarry_124_10
+  SIGNAL rtlcarry_124_9 : BIT;		-- rtlcarry_124_9
+  SIGNAL rtlcarry_124_8 : BIT;		-- rtlcarry_124_8
+  SIGNAL rtlcarry_124_7 : BIT;		-- rtlcarry_124_7
+  SIGNAL rtlcarry_124_6 : BIT;		-- rtlcarry_124_6
+  SIGNAL rtlcarry_124_5 : BIT;		-- rtlcarry_124_5
+  SIGNAL rtlcarry_124_4 : BIT;		-- rtlcarry_124_4
+  SIGNAL rtlcarry_124_3 : BIT;		-- rtlcarry_124_3
+  SIGNAL rtlcarry_124_2 : BIT;		-- rtlcarry_124_2
+  SIGNAL rtlcarry_124_1 : BIT;		-- rtlcarry_124_1
+  SIGNAL rtlcarry_121_15 : BIT;		-- rtlcarry_121_15
+  SIGNAL rtlcarry_121_14 : BIT;		-- rtlcarry_121_14
+  SIGNAL rtlcarry_121_13 : BIT;		-- rtlcarry_121_13
+  SIGNAL rtlcarry_121_12 : BIT;		-- rtlcarry_121_12
+  SIGNAL rtlcarry_121_11 : BIT;		-- rtlcarry_121_11
+  SIGNAL rtlcarry_121_10 : BIT;		-- rtlcarry_121_10
+  SIGNAL rtlcarry_121_9 : BIT;		-- rtlcarry_121_9
+  SIGNAL rtlcarry_121_8 : BIT;		-- rtlcarry_121_8
+  SIGNAL rtlcarry_121_7 : BIT;		-- rtlcarry_121_7
+  SIGNAL rtlcarry_121_6 : BIT;		-- rtlcarry_121_6
+  SIGNAL rtlcarry_121_5 : BIT;		-- rtlcarry_121_5
+  SIGNAL rtlcarry_121_4 : BIT;		-- rtlcarry_121_4
+  SIGNAL rtlcarry_121_3 : BIT;		-- rtlcarry_121_3
+  SIGNAL rtlcarry_121_2 : BIT;		-- rtlcarry_121_2
+  SIGNAL rtlcarry_121_1 : BIT;		-- rtlcarry_121_1
+  SIGNAL rtlcarry_118_15 : BIT;		-- rtlcarry_118_15
+  SIGNAL rtlcarry_118_14 : BIT;		-- rtlcarry_118_14
+  SIGNAL rtlcarry_118_13 : BIT;		-- rtlcarry_118_13
+  SIGNAL rtlcarry_118_12 : BIT;		-- rtlcarry_118_12
+  SIGNAL rtlcarry_118_11 : BIT;		-- rtlcarry_118_11
+  SIGNAL rtlcarry_118_10 : BIT;		-- rtlcarry_118_10
+  SIGNAL rtlcarry_118_9 : BIT;		-- rtlcarry_118_9
+  SIGNAL rtlcarry_118_8 : BIT;		-- rtlcarry_118_8
+  SIGNAL rtlcarry_118_7 : BIT;		-- rtlcarry_118_7
+  SIGNAL rtlcarry_118_6 : BIT;		-- rtlcarry_118_6
+  SIGNAL rtlcarry_118_5 : BIT;		-- rtlcarry_118_5
+  SIGNAL rtlcarry_118_4 : BIT;		-- rtlcarry_118_4
+  SIGNAL rtlcarry_118_3 : BIT;		-- rtlcarry_118_3
+  SIGNAL rtlcarry_118_2 : BIT;		-- rtlcarry_118_2
+  SIGNAL rtlcarry_118_1 : BIT;		-- rtlcarry_118_1
+  SIGNAL rtlcarry_115_15 : BIT;		-- rtlcarry_115_15
+  SIGNAL rtlcarry_115_14 : BIT;		-- rtlcarry_115_14
+  SIGNAL rtlcarry_115_13 : BIT;		-- rtlcarry_115_13
+  SIGNAL rtlcarry_115_12 : BIT;		-- rtlcarry_115_12
+  SIGNAL rtlcarry_115_11 : BIT;		-- rtlcarry_115_11
+  SIGNAL rtlcarry_115_10 : BIT;		-- rtlcarry_115_10
+  SIGNAL rtlcarry_115_9 : BIT;		-- rtlcarry_115_9
+  SIGNAL rtlcarry_115_8 : BIT;		-- rtlcarry_115_8
+  SIGNAL rtlcarry_115_7 : BIT;		-- rtlcarry_115_7
+  SIGNAL rtlcarry_115_6 : BIT;		-- rtlcarry_115_6
+  SIGNAL rtlcarry_115_5 : BIT;		-- rtlcarry_115_5
+  SIGNAL rtlcarry_115_4 : BIT;		-- rtlcarry_115_4
+  SIGNAL rtlcarry_115_3 : BIT;		-- rtlcarry_115_3
+  SIGNAL rtlcarry_115_2 : BIT;		-- rtlcarry_115_2
+  SIGNAL rtlcarry_115_1 : BIT;		-- rtlcarry_115_1
+  SIGNAL rtlcarry_112_15 : BIT;		-- rtlcarry_112_15
+  SIGNAL rtlcarry_112_14 : BIT;		-- rtlcarry_112_14
+  SIGNAL rtlcarry_112_13 : BIT;		-- rtlcarry_112_13
+  SIGNAL rtlcarry_112_12 : BIT;		-- rtlcarry_112_12
+  SIGNAL rtlcarry_112_11 : BIT;		-- rtlcarry_112_11
+  SIGNAL rtlcarry_112_10 : BIT;		-- rtlcarry_112_10
+  SIGNAL rtlcarry_112_9 : BIT;		-- rtlcarry_112_9
+  SIGNAL rtlcarry_112_8 : BIT;		-- rtlcarry_112_8
+  SIGNAL rtlcarry_112_7 : BIT;		-- rtlcarry_112_7
+  SIGNAL rtlcarry_112_6 : BIT;		-- rtlcarry_112_6
+  SIGNAL rtlcarry_112_5 : BIT;		-- rtlcarry_112_5
+  SIGNAL rtlcarry_112_4 : BIT;		-- rtlcarry_112_4
+  SIGNAL rtlcarry_112_3 : BIT;		-- rtlcarry_112_3
+  SIGNAL rtlcarry_112_2 : BIT;		-- rtlcarry_112_2
+  SIGNAL rtlcarry_112_1 : BIT;		-- rtlcarry_112_1
+  SIGNAL rtlcarry_109_15 : BIT;		-- rtlcarry_109_15
+  SIGNAL rtlcarry_109_14 : BIT;		-- rtlcarry_109_14
+  SIGNAL rtlcarry_109_13 : BIT;		-- rtlcarry_109_13
+  SIGNAL rtlcarry_109_12 : BIT;		-- rtlcarry_109_12
+  SIGNAL rtlcarry_109_11 : BIT;		-- rtlcarry_109_11
+  SIGNAL rtlcarry_109_10 : BIT;		-- rtlcarry_109_10
+  SIGNAL rtlcarry_109_9 : BIT;		-- rtlcarry_109_9
+  SIGNAL rtlcarry_109_8 : BIT;		-- rtlcarry_109_8
+  SIGNAL rtlcarry_109_7 : BIT;		-- rtlcarry_109_7
+  SIGNAL rtlcarry_109_6 : BIT;		-- rtlcarry_109_6
+  SIGNAL rtlcarry_109_5 : BIT;		-- rtlcarry_109_5
+  SIGNAL rtlcarry_109_4 : BIT;		-- rtlcarry_109_4
+  SIGNAL rtlcarry_109_3 : BIT;		-- rtlcarry_109_3
+  SIGNAL rtlcarry_109_2 : BIT;		-- rtlcarry_109_2
+  SIGNAL rtlcarry_109_1 : BIT;		-- rtlcarry_109_1
+  SIGNAL rtlcarry_106_15 : BIT;		-- rtlcarry_106_15
+  SIGNAL rtlcarry_106_14 : BIT;		-- rtlcarry_106_14
+  SIGNAL rtlcarry_106_13 : BIT;		-- rtlcarry_106_13
+  SIGNAL rtlcarry_106_12 : BIT;		-- rtlcarry_106_12
+  SIGNAL rtlcarry_106_11 : BIT;		-- rtlcarry_106_11
+  SIGNAL rtlcarry_106_10 : BIT;		-- rtlcarry_106_10
+  SIGNAL rtlcarry_106_9 : BIT;		-- rtlcarry_106_9
+  SIGNAL rtlcarry_106_8 : BIT;		-- rtlcarry_106_8
+  SIGNAL rtlcarry_106_7 : BIT;		-- rtlcarry_106_7
+  SIGNAL rtlcarry_106_6 : BIT;		-- rtlcarry_106_6
+  SIGNAL rtlcarry_106_5 : BIT;		-- rtlcarry_106_5
+  SIGNAL rtlcarry_106_4 : BIT;		-- rtlcarry_106_4
+  SIGNAL rtlcarry_106_3 : BIT;		-- rtlcarry_106_3
+  SIGNAL rtlcarry_106_2 : BIT;		-- rtlcarry_106_2
+  SIGNAL rtlcarry_106_1 : BIT;		-- rtlcarry_106_1
+  SIGNAL rtlcarry_103_15 : BIT;		-- rtlcarry_103_15
+  SIGNAL rtlcarry_103_14 : BIT;		-- rtlcarry_103_14
+  SIGNAL rtlcarry_103_13 : BIT;		-- rtlcarry_103_13
+  SIGNAL rtlcarry_103_12 : BIT;		-- rtlcarry_103_12
+  SIGNAL rtlcarry_103_11 : BIT;		-- rtlcarry_103_11
+  SIGNAL rtlcarry_103_10 : BIT;		-- rtlcarry_103_10
+  SIGNAL rtlcarry_103_9 : BIT;		-- rtlcarry_103_9
+  SIGNAL rtlcarry_103_8 : BIT;		-- rtlcarry_103_8
+  SIGNAL rtlcarry_103_7 : BIT;		-- rtlcarry_103_7
+  SIGNAL rtlcarry_103_6 : BIT;		-- rtlcarry_103_6
+  SIGNAL rtlcarry_103_5 : BIT;		-- rtlcarry_103_5
+  SIGNAL rtlcarry_103_4 : BIT;		-- rtlcarry_103_4
+  SIGNAL rtlcarry_103_3 : BIT;		-- rtlcarry_103_3
+  SIGNAL rtlcarry_103_2 : BIT;		-- rtlcarry_103_2
+  SIGNAL rtlcarry_103_1 : BIT;		-- rtlcarry_103_1
+  SIGNAL rtlcarry_100_15 : BIT;		-- rtlcarry_100_15
+  SIGNAL rtlcarry_100_14 : BIT;		-- rtlcarry_100_14
+  SIGNAL rtlcarry_100_13 : BIT;		-- rtlcarry_100_13
+  SIGNAL rtlcarry_100_12 : BIT;		-- rtlcarry_100_12
+  SIGNAL rtlcarry_100_11 : BIT;		-- rtlcarry_100_11
+  SIGNAL rtlcarry_100_10 : BIT;		-- rtlcarry_100_10
+  SIGNAL rtlcarry_100_9 : BIT;		-- rtlcarry_100_9
+  SIGNAL rtlcarry_100_8 : BIT;		-- rtlcarry_100_8
+  SIGNAL rtlcarry_100_7 : BIT;		-- rtlcarry_100_7
+  SIGNAL rtlcarry_100_6 : BIT;		-- rtlcarry_100_6
+  SIGNAL rtlcarry_100_5 : BIT;		-- rtlcarry_100_5
+  SIGNAL rtlcarry_100_4 : BIT;		-- rtlcarry_100_4
+  SIGNAL rtlcarry_100_3 : BIT;		-- rtlcarry_100_3
+  SIGNAL rtlcarry_100_2 : BIT;		-- rtlcarry_100_2
+  SIGNAL rtlcarry_100_1 : BIT;		-- rtlcarry_100_1
+  SIGNAL rtlcarry_95_11 : BIT;		-- rtlcarry_95_11
+  SIGNAL rtlcarry_95_3 : BIT;		-- rtlcarry_95_3
+  SIGNAL rtlcarry_90_11 : BIT;		-- rtlcarry_90_11
+  SIGNAL rtlcarry_90_3 : BIT;		-- rtlcarry_90_3
+  SIGNAL rtlcarry_85_11 : BIT;		-- rtlcarry_85_11
+  SIGNAL rtlcarry_85_3 : BIT;		-- rtlcarry_85_3
+  SIGNAL rtlcarry_80_11 : BIT;		-- rtlcarry_80_11
+  SIGNAL rtlcarry_80_3 : BIT;		-- rtlcarry_80_3
+  SIGNAL rtlcarry_75_11 : BIT;		-- rtlcarry_75_11
+  SIGNAL rtlcarry_75_3 : BIT;		-- rtlcarry_75_3
+  SIGNAL rtlcarry_70_11 : BIT;		-- rtlcarry_70_11
+  SIGNAL rtlcarry_70_3 : BIT;		-- rtlcarry_70_3
+  SIGNAL rtlcarry_65_11 : BIT;		-- rtlcarry_65_11
+  SIGNAL rtlcarry_65_3 : BIT;		-- rtlcarry_65_3
+  SIGNAL rtlcarry_60_11 : BIT;		-- rtlcarry_60_11
+  SIGNAL rtlcarry_60_3 : BIT;		-- rtlcarry_60_3
+  SIGNAL rtlcarry_55_11 : BIT;		-- rtlcarry_55_11
+  SIGNAL rtlcarry_55_3 : BIT;		-- rtlcarry_55_3
+  SIGNAL rtlcarry_50_11 : BIT;		-- rtlcarry_50_11
+  SIGNAL rtlcarry_50_3 : BIT;		-- rtlcarry_50_3
+  SIGNAL rtlcarry_45_11 : BIT;		-- rtlcarry_45_11
+  SIGNAL rtlcarry_45_3 : BIT;		-- rtlcarry_45_3
+  SIGNAL rtlcarry_40_11 : BIT;		-- rtlcarry_40_11
+  SIGNAL rtlcarry_40_3 : BIT;		-- rtlcarry_40_3
+  SIGNAL rtlcarry_35_11 : BIT;		-- rtlcarry_35_11
+  SIGNAL rtlcarry_35_3 : BIT;		-- rtlcarry_35_3
+  SIGNAL rtlcarry_30_11 : BIT;		-- rtlcarry_30_11
+  SIGNAL rtlcarry_30_3 : BIT;		-- rtlcarry_30_3
+  SIGNAL rtlcarry_25_11 : BIT;		-- rtlcarry_25_11
+  SIGNAL rtlcarry_25_3 : BIT;		-- rtlcarry_25_3
+  SIGNAL rtlcarry_20_11 : BIT;		-- rtlcarry_20_11
+  SIGNAL rtlcarry_20_3 : BIT;		-- rtlcarry_20_3
+  SIGNAL rtlcarry_15_11 : BIT;		-- rtlcarry_15_11
+  SIGNAL rtlcarry_15_3 : BIT;		-- rtlcarry_15_3
+  SIGNAL rtlcarry_10_11 : BIT;		-- rtlcarry_10_11
+  SIGNAL rtlcarry_10_3 : BIT;		-- rtlcarry_10_3
+  SIGNAL rtlcarry_5_11 : BIT;		-- rtlcarry_5_11
+  SIGNAL rtlcarry_5_3 : BIT;		-- rtlcarry_5_3
+  SIGNAL rtlcarry_0_11 : BIT;		-- rtlcarry_0_11
+  SIGNAL rtlcarry_0_3 : BIT;		-- rtlcarry_0_3
+  SIGNAL aux0 : BIT;		-- aux0
+  SIGNAL aux1 : BIT;		-- aux1
+  SIGNAL aux2 : BIT;		-- aux2
+  SIGNAL aux3 : BIT;		-- aux3
+  SIGNAL aux4 : BIT;		-- aux4
+  SIGNAL aux5 : BIT;		-- aux5
+  SIGNAL aux6 : BIT;		-- aux6
+  SIGNAL aux7 : BIT;		-- aux7
+  SIGNAL aux8 : BIT;		-- aux8
+  SIGNAL aux9 : BIT;		-- aux9
+  SIGNAL aux10 : BIT;		-- aux10
+  SIGNAL aux11 : BIT;		-- aux11
+  SIGNAL aux12 : BIT;		-- aux12
+  SIGNAL aux13 : BIT;		-- aux13
+  SIGNAL aux14 : BIT;		-- aux14
+  SIGNAL aux15 : BIT;		-- aux15
+  SIGNAL aux16 : BIT;		-- aux16
+  SIGNAL aux17 : BIT;		-- aux17
+  SIGNAL aux18 : BIT;		-- aux18
+  SIGNAL aux19 : BIT;		-- aux19
+  SIGNAL aux20 : BIT;		-- aux20
+  SIGNAL aux21 : BIT;		-- aux21
+  SIGNAL aux22 : BIT;		-- aux22
+  SIGNAL aux23 : BIT;		-- aux23
+  SIGNAL aux24 : BIT;		-- aux24
+  SIGNAL aux25 : BIT;		-- aux25
+  SIGNAL aux26 : BIT;		-- aux26
+  SIGNAL aux27 : BIT;		-- aux27
+  SIGNAL aux28 : BIT;		-- aux28
+  SIGNAL aux29 : BIT;		-- aux29
+  SIGNAL aux30 : BIT;		-- aux30
+  SIGNAL aux31 : BIT;		-- aux31
+  SIGNAL aux32 : BIT;		-- aux32
+  SIGNAL aux33 : BIT;		-- aux33
+  SIGNAL aux34 : BIT;		-- aux34
+  SIGNAL aux35 : BIT;		-- aux35
+  SIGNAL aux36 : BIT;		-- aux36
+  SIGNAL aux37 : BIT;		-- aux37
+  SIGNAL aux38 : BIT;		-- aux38
+  SIGNAL aux39 : BIT;		-- aux39
+  SIGNAL aux40 : BIT;		-- aux40
+
+BEGIN
+  aux40 <= (rtlcarry_10_11 XOR rtlcarry_15_11);
+  aux39 <= '0';
+  aux38 <= (rtlcarry_25_11 XOR rtlcarry_20_11);
+  aux37 <= '0';
+  aux36 <= '0';
+  aux35 <= (rtlcarry_30_11 XOR rtlcarry_35_11);
+  aux34 <= '0';
+  aux33 <= '0';
+  aux32 <= (rtlcarry_45_11 XOR rtlcarry_40_11);
+  aux31 <= '0';
+  aux30 <= '0';
+  aux29 <= (rtlcarry_55_11 XOR rtlcarry_50_11);
+  aux28 <= '0';
+  aux27 <= '0';
+  aux26 <= (rtlcarry_65_11 XOR rtlcarry_60_11);
+  aux25 <= '0';
+  aux24 <= '0';
+  aux23 <= (rtlcarry_75_11 XOR rtlcarry_70_11);
+  aux22 <= '0';
+  aux21 <= '0';
+  aux20 <= (rtlcarry_85_11 XOR rtlcarry_80_11);
+  aux19 <= '0';
+  aux18 <= '0';
+  aux17 <= (rtlcarry_95_11 XOR rtlcarry_90_11);
+  aux16 <= '0';
+  aux15 <= '0';
+  aux14 <= (product2(12) XOR product1_cast(15));
+  aux13 <= (product3(12) XOR sum1(15));
+  aux12 <= (product4(12) XOR sum2(15));
+  aux11 <= (product5(12) XOR sum3(15));
+  aux10 <= (product6(12) XOR sum4(15));
+  aux9 <= (product7(12) XOR sum5(15));
+  aux8 <= (product8(12) XOR sum6(15));
+  aux7 <= (product9(12) XOR sum7(15));
+  aux6 <= (product10(12) XOR sum8(15));
+  aux5 <= (product11(12) XOR sum9(15));
+  aux4 <= (product12(12) XOR sum10(15));
+  aux3 <= (product13(12) XOR sum11(15));
+  aux2 <= (product14(12) XOR sum12(15));
+  aux1 <= (product15(12) XOR sum13(15));
+  aux0 <= (product16(12) XOR sum14(15));
+  rtlcarry_0_3 <= '0';
+  rtlcarry_0_11 <= '0';
+  rtlcarry_5_3 <= '0';
+  rtlcarry_5_11 <= '0';
+  rtlcarry_10_3 <= '0';
+  rtlcarry_10_11 <= '0';
+  rtlcarry_15_3 <= '0';
+  rtlcarry_15_11 <= '0';
+  rtlcarry_20_3 <= '0';
+  rtlcarry_20_11 <= '0';
+  rtlcarry_25_3 <= '0';
+  rtlcarry_25_11 <= '0';
+  rtlcarry_30_3 <= '0';
+  rtlcarry_30_11 <= '0';
+  rtlcarry_35_3 <= '0';
+  rtlcarry_35_11 <= '0';
+  rtlcarry_40_3 <= '0';
+  rtlcarry_40_11 <= '0';
+  rtlcarry_45_3 <= '0';
+  rtlcarry_45_11 <= '0';
+  rtlcarry_50_3 <= '0';
+  rtlcarry_50_11 <= '0';
+  rtlcarry_55_3 <= '0';
+  rtlcarry_55_11 <= '0';
+  rtlcarry_60_3 <= '0';
+  rtlcarry_60_11 <= '0';
+  rtlcarry_65_3 <= '0';
+  rtlcarry_65_11 <= '0';
+  rtlcarry_70_3 <= '0';
+  rtlcarry_70_11 <= '0';
+  rtlcarry_75_3 <= '0';
+  rtlcarry_75_11 <= '0';
+  rtlcarry_80_3 <= '0';
+  rtlcarry_80_11 <= '0';
+  rtlcarry_85_3 <= '0';
+  rtlcarry_85_11 <= '0';
+  rtlcarry_90_3 <= '0';
+  rtlcarry_90_11 <= '0';
+  rtlcarry_95_3 <= '0';
+  rtlcarry_95_11 <= '0';
+  rtlcarry_100_1 <= (product16(0) AND sum14(0));
+  rtlcarry_100_2 <= ((rtlcarry_100_1 AND (sum14(1) OR product16(1))) 
+OR (sum14(1) AND product16(1)));
+  rtlcarry_100_3 <= ((rtlcarry_100_2 AND (sum14(2) OR product16(2))) 
+OR (sum14(2) AND product16(2)));
+  rtlcarry_100_4 <= ((rtlcarry_100_3 AND (sum14(3) OR product16(3))) 
+OR (sum14(3) AND product16(3)));
+  rtlcarry_100_5 <= ((rtlcarry_100_4 AND (sum14(4) OR product16(4))) 
+OR (sum14(4) AND product16(4)));
+  rtlcarry_100_6 <= ((rtlcarry_100_5 AND (sum14(5) OR product16(5))) 
+OR (sum14(5) AND product16(5)));
+  rtlcarry_100_7 <= ((rtlcarry_100_6 AND (sum14(6) OR product16(6))) 
+OR (sum14(6) AND product16(6)));
+  rtlcarry_100_8 <= ((rtlcarry_100_7 AND (sum14(7) OR product16(7))) 
+OR (sum14(7) AND product16(7)));
+  rtlcarry_100_9 <= ((rtlcarry_100_8 AND (sum14(8) OR product16(8))) 
+OR (sum14(8) AND product16(8)));
+  rtlcarry_100_10 <= ((rtlcarry_100_9 AND (sum14(9) OR product16(9))) 
+OR (sum14(9) AND product16(9)));
+  rtlcarry_100_11 <= ((rtlcarry_100_10 AND (sum14(10) OR product16(10)
+)) OR (sum14(10) AND product16(10)));
+  rtlcarry_100_12 <= ((rtlcarry_100_11 AND (sum14(11) OR product16(11)
+)) OR (sum14(11) AND product16(11)));
+  rtlcarry_100_13 <= ((rtlcarry_100_12 AND (sum14(12) OR product16(12)
+)) OR (sum14(12) AND product16(12)));
+  rtlcarry_100_14 <= ((rtlcarry_100_13 AND (sum14(13) OR product16(12)
+)) OR (sum14(13) AND product16(12)));
+  rtlcarry_100_15 <= ((rtlcarry_100_14 AND (sum14(14) OR product16(12)
+)) OR (sum14(14) AND product16(12)));
+  rtlcarry_103_1 <= (product15(0) AND sum13(0));
+  rtlcarry_103_2 <= ((rtlcarry_103_1 AND (sum13(1) OR product15(1))) 
+OR (sum13(1) AND product15(1)));
+  rtlcarry_103_3 <= ((rtlcarry_103_2 AND (sum13(2) OR product15(2))) 
+OR (sum13(2) AND product15(2)));
+  rtlcarry_103_4 <= ((rtlcarry_103_3 AND (sum13(3) OR product15(3))) 
+OR (sum13(3) AND product15(3)));
+  rtlcarry_103_5 <= ((rtlcarry_103_4 AND (sum13(4) OR product15(4))) 
+OR (sum13(4) AND product15(4)));
+  rtlcarry_103_6 <= ((rtlcarry_103_5 AND (sum13(5) OR product15(5))) 
+OR (sum13(5) AND product15(5)));
+  rtlcarry_103_7 <= ((rtlcarry_103_6 AND (sum13(6) OR product15(6))) 
+OR (sum13(6) AND product15(6)));
+  rtlcarry_103_8 <= ((rtlcarry_103_7 AND (sum13(7) OR product15(7))) 
+OR (sum13(7) AND product15(7)));
+  rtlcarry_103_9 <= ((rtlcarry_103_8 AND (sum13(8) OR product15(8))) 
+OR (sum13(8) AND product15(8)));
+  rtlcarry_103_10 <= ((rtlcarry_103_9 AND (sum13(9) OR product15(9))) 
+OR (sum13(9) AND product15(9)));
+  rtlcarry_103_11 <= ((rtlcarry_103_10 AND (sum13(10) OR product15(10)
+)) OR (sum13(10) AND product15(10)));
+  rtlcarry_103_12 <= ((rtlcarry_103_11 AND (sum13(11) OR product15(11)
+)) OR (sum13(11) AND product15(11)));
+  rtlcarry_103_13 <= ((rtlcarry_103_12 AND (sum13(12) OR product15(12)
+)) OR (sum13(12) AND product15(12)));
+  rtlcarry_103_14 <= ((rtlcarry_103_13 AND (sum13(13) OR product15(12)
+)) OR (sum13(13) AND product15(12)));
+  rtlcarry_103_15 <= ((rtlcarry_103_14 AND (sum13(14) OR product15(12)
+)) OR (sum13(14) AND product15(12)));
+  rtlcarry_106_1 <= (product14(0) AND sum12(0));
+  rtlcarry_106_2 <= ((rtlcarry_106_1 AND (sum12(1) OR product14(1))) 
+OR (sum12(1) AND product14(1)));
+  rtlcarry_106_3 <= ((rtlcarry_106_2 AND (sum12(2) OR product14(2))) 
+OR (sum12(2) AND product14(2)));
+  rtlcarry_106_4 <= ((rtlcarry_106_3 AND (sum12(3) OR product14(3))) 
+OR (sum12(3) AND product14(3)));
+  rtlcarry_106_5 <= ((rtlcarry_106_4 AND (sum12(4) OR product14(4))) 
+OR (sum12(4) AND product14(4)));
+  rtlcarry_106_6 <= ((rtlcarry_106_5 AND (sum12(5) OR product14(5))) 
+OR (sum12(5) AND product14(5)));
+  rtlcarry_106_7 <= ((rtlcarry_106_6 AND (sum12(6) OR product14(6))) 
+OR (sum12(6) AND product14(6)));
+  rtlcarry_106_8 <= ((rtlcarry_106_7 AND (sum12(7) OR product14(7))) 
+OR (sum12(7) AND product14(7)));
+  rtlcarry_106_9 <= ((rtlcarry_106_8 AND (sum12(8) OR product14(8))) 
+OR (sum12(8) AND product14(8)));
+  rtlcarry_106_10 <= ((rtlcarry_106_9 AND (sum12(9) OR product14(9))) 
+OR (sum12(9) AND product14(9)));
+  rtlcarry_106_11 <= ((rtlcarry_106_10 AND (sum12(10) OR product14(10)
+)) OR (sum12(10) AND product14(10)));
+  rtlcarry_106_12 <= ((rtlcarry_106_11 AND (sum12(11) OR product14(11)
+)) OR (sum12(11) AND product14(11)));
+  rtlcarry_106_13 <= ((rtlcarry_106_12 AND (sum12(12) OR product14(12)
+)) OR (sum12(12) AND product14(12)));
+  rtlcarry_106_14 <= ((rtlcarry_106_13 AND (sum12(13) OR product14(12)
+)) OR (sum12(13) AND product14(12)));
+  rtlcarry_106_15 <= ((rtlcarry_106_14 AND (sum12(14) OR product14(12)
+)) OR (sum12(14) AND product14(12)));
+  rtlcarry_109_1 <= (product13(0) AND sum11(0));
+  rtlcarry_109_2 <= ((rtlcarry_109_1 AND (sum11(1) OR product13(1))) 
+OR (sum11(1) AND product13(1)));
+  rtlcarry_109_3 <= ((rtlcarry_109_2 AND (sum11(2) OR product13(2))) 
+OR (sum11(2) AND product13(2)));
+  rtlcarry_109_4 <= ((rtlcarry_109_3 AND (sum11(3) OR product13(3))) 
+OR (sum11(3) AND product13(3)));
+  rtlcarry_109_5 <= ((rtlcarry_109_4 AND (sum11(4) OR product13(4))) 
+OR (sum11(4) AND product13(4)));
+  rtlcarry_109_6 <= ((rtlcarry_109_5 AND (sum11(5) OR product13(5))) 
+OR (sum11(5) AND product13(5)));
+  rtlcarry_109_7 <= ((rtlcarry_109_6 AND (sum11(6) OR product13(6))) 
+OR (sum11(6) AND product13(6)));
+  rtlcarry_109_8 <= ((rtlcarry_109_7 AND (sum11(7) OR product13(7))) 
+OR (sum11(7) AND product13(7)));
+  rtlcarry_109_9 <= ((rtlcarry_109_8 AND (sum11(8) OR product13(8))) 
+OR (sum11(8) AND product13(8)));
+  rtlcarry_109_10 <= ((rtlcarry_109_9 AND (sum11(9) OR product13(9))) 
+OR (sum11(9) AND product13(9)));
+  rtlcarry_109_11 <= ((rtlcarry_109_10 AND (sum11(10) OR product13(10)
+)) OR (sum11(10) AND product13(10)));
+  rtlcarry_109_12 <= ((rtlcarry_109_11 AND (sum11(11) OR product13(11)
+)) OR (sum11(11) AND product13(11)));
+  rtlcarry_109_13 <= ((rtlcarry_109_12 AND (sum11(12) OR product13(12)
+)) OR (sum11(12) AND product13(12)));
+  rtlcarry_109_14 <= ((rtlcarry_109_13 AND (sum11(13) OR product13(12)
+)) OR (sum11(13) AND product13(12)));
+  rtlcarry_109_15 <= ((rtlcarry_109_14 AND (sum11(14) OR product13(12)
+)) OR (sum11(14) AND product13(12)));
+  rtlcarry_112_1 <= (product12(0) AND sum10(0));
+  rtlcarry_112_2 <= ((rtlcarry_112_1 AND (sum10(1) OR product12(1))) 
+OR (sum10(1) AND product12(1)));
+  rtlcarry_112_3 <= ((rtlcarry_112_2 AND (sum10(2) OR product12(2))) 
+OR (sum10(2) AND product12(2)));
+  rtlcarry_112_4 <= ((rtlcarry_112_3 AND (sum10(3) OR product12(3))) 
+OR (sum10(3) AND product12(3)));
+  rtlcarry_112_5 <= ((rtlcarry_112_4 AND (sum10(4) OR product12(4))) 
+OR (sum10(4) AND product12(4)));
+  rtlcarry_112_6 <= ((rtlcarry_112_5 AND (sum10(5) OR product12(5))) 
+OR (sum10(5) AND product12(5)));
+  rtlcarry_112_7 <= ((rtlcarry_112_6 AND (sum10(6) OR product12(6))) 
+OR (sum10(6) AND product12(6)));
+  rtlcarry_112_8 <= ((rtlcarry_112_7 AND (sum10(7) OR product12(7))) 
+OR (sum10(7) AND product12(7)));
+  rtlcarry_112_9 <= ((rtlcarry_112_8 AND (sum10(8) OR product12(8))) 
+OR (sum10(8) AND product12(8)));
+  rtlcarry_112_10 <= ((rtlcarry_112_9 AND (sum10(9) OR product12(9))) 
+OR (sum10(9) AND product12(9)));
+  rtlcarry_112_11 <= ((rtlcarry_112_10 AND (sum10(10) OR product12(10)
+)) OR (sum10(10) AND product12(10)));
+  rtlcarry_112_12 <= ((rtlcarry_112_11 AND (sum10(11) OR product12(11)
+)) OR (sum10(11) AND product12(11)));
+  rtlcarry_112_13 <= ((rtlcarry_112_12 AND (sum10(12) OR product12(12)
+)) OR (sum10(12) AND product12(12)));
+  rtlcarry_112_14 <= ((rtlcarry_112_13 AND (sum10(13) OR product12(12)
+)) OR (sum10(13) AND product12(12)));
+  rtlcarry_112_15 <= ((rtlcarry_112_14 AND (sum10(14) OR product12(12)
+)) OR (sum10(14) AND product12(12)));
+  rtlcarry_115_1 <= (product11(0) AND sum9(0));
+  rtlcarry_115_2 <= ((rtlcarry_115_1 AND (sum9(1) OR product11(1))) 
+OR (sum9(1) AND product11(1)));
+  rtlcarry_115_3 <= ((rtlcarry_115_2 AND (sum9(2) OR product11(2))) 
+OR (sum9(2) AND product11(2)));
+  rtlcarry_115_4 <= ((rtlcarry_115_3 AND (sum9(3) OR product11(3))) 
+OR (sum9(3) AND product11(3)));
+  rtlcarry_115_5 <= ((rtlcarry_115_4 AND (sum9(4) OR product11(4))) 
+OR (sum9(4) AND product11(4)));
+  rtlcarry_115_6 <= ((rtlcarry_115_5 AND (sum9(5) OR product11(5))) 
+OR (sum9(5) AND product11(5)));
+  rtlcarry_115_7 <= ((rtlcarry_115_6 AND (sum9(6) OR product11(6))) 
+OR (sum9(6) AND product11(6)));
+  rtlcarry_115_8 <= ((rtlcarry_115_7 AND (sum9(7) OR product11(7))) 
+OR (sum9(7) AND product11(7)));
+  rtlcarry_115_9 <= ((rtlcarry_115_8 AND (sum9(8) OR product11(8))) 
+OR (sum9(8) AND product11(8)));
+  rtlcarry_115_10 <= ((rtlcarry_115_9 AND (sum9(9) OR product11(9))) 
+OR (sum9(9) AND product11(9)));
+  rtlcarry_115_11 <= ((rtlcarry_115_10 AND (sum9(10) OR product11(10))
+) OR (sum9(10) AND product11(10)));
+  rtlcarry_115_12 <= ((rtlcarry_115_11 AND (sum9(11) OR product11(11))
+) OR (sum9(11) AND product11(11)));
+  rtlcarry_115_13 <= ((rtlcarry_115_12 AND (sum9(12) OR product11(12))
+) OR (sum9(12) AND product11(12)));
+  rtlcarry_115_14 <= ((rtlcarry_115_13 AND (sum9(13) OR product11(12))
+) OR (sum9(13) AND product11(12)));
+  rtlcarry_115_15 <= ((rtlcarry_115_14 AND (sum9(14) OR product11(12))
+) OR (sum9(14) AND product11(12)));
+  rtlcarry_118_1 <= (product10(0) AND sum8(0));
+  rtlcarry_118_2 <= ((rtlcarry_118_1 AND (sum8(1) OR product10(1))) 
+OR (sum8(1) AND product10(1)));
+  rtlcarry_118_3 <= ((rtlcarry_118_2 AND (sum8(2) OR product10(2))) 
+OR (sum8(2) AND product10(2)));
+  rtlcarry_118_4 <= ((rtlcarry_118_3 AND (sum8(3) OR product10(3))) 
+OR (sum8(3) AND product10(3)));
+  rtlcarry_118_5 <= ((rtlcarry_118_4 AND (sum8(4) OR product10(4))) 
+OR (sum8(4) AND product10(4)));
+  rtlcarry_118_6 <= ((rtlcarry_118_5 AND (sum8(5) OR product10(5))) 
+OR (sum8(5) AND product10(5)));
+  rtlcarry_118_7 <= ((rtlcarry_118_6 AND (sum8(6) OR product10(6))) 
+OR (sum8(6) AND product10(6)));
+  rtlcarry_118_8 <= ((rtlcarry_118_7 AND (sum8(7) OR product10(7))) 
+OR (sum8(7) AND product10(7)));
+  rtlcarry_118_9 <= ((rtlcarry_118_8 AND (sum8(8) OR product10(8))) 
+OR (sum8(8) AND product10(8)));
+  rtlcarry_118_10 <= ((rtlcarry_118_9 AND (sum8(9) OR product10(9))) 
+OR (sum8(9) AND product10(9)));
+  rtlcarry_118_11 <= ((rtlcarry_118_10 AND (sum8(10) OR product10(10))
+) OR (sum8(10) AND product10(10)));
+  rtlcarry_118_12 <= ((rtlcarry_118_11 AND (sum8(11) OR product10(11))
+) OR (sum8(11) AND product10(11)));
+  rtlcarry_118_13 <= ((rtlcarry_118_12 AND (sum8(12) OR product10(12))
+) OR (sum8(12) AND product10(12)));
+  rtlcarry_118_14 <= ((rtlcarry_118_13 AND (sum8(13) OR product10(12))
+) OR (sum8(13) AND product10(12)));
+  rtlcarry_118_15 <= ((rtlcarry_118_14 AND (sum8(14) OR product10(12))
+) OR (sum8(14) AND product10(12)));
+  rtlcarry_121_1 <= (product9(0) AND sum7(0));
+  rtlcarry_121_2 <= ((rtlcarry_121_1 AND (sum7(1) OR product9(1))) OR
+ (sum7(1) AND product9(1)));
+  rtlcarry_121_3 <= ((rtlcarry_121_2 AND (sum7(2) OR product9(2))) OR
+ (sum7(2) AND product9(2)));
+  rtlcarry_121_4 <= ((rtlcarry_121_3 AND (sum7(3) OR product9(3))) OR
+ (sum7(3) AND product9(3)));
+  rtlcarry_121_5 <= ((rtlcarry_121_4 AND (sum7(4) OR product9(4))) OR
+ (sum7(4) AND product9(4)));
+  rtlcarry_121_6 <= ((rtlcarry_121_5 AND (sum7(5) OR product9(5))) OR
+ (sum7(5) AND product9(5)));
+  rtlcarry_121_7 <= ((rtlcarry_121_6 AND (sum7(6) OR product9(6))) OR
+ (sum7(6) AND product9(6)));
+  rtlcarry_121_8 <= ((rtlcarry_121_7 AND (sum7(7) OR product9(7))) OR
+ (sum7(7) AND product9(7)));
+  rtlcarry_121_9 <= ((rtlcarry_121_8 AND (sum7(8) OR product9(8))) OR
+ (sum7(8) AND product9(8)));
+  rtlcarry_121_10 <= ((rtlcarry_121_9 AND (sum7(9) OR product9(9))) OR
+ (sum7(9) AND product9(9)));
+  rtlcarry_121_11 <= ((rtlcarry_121_10 AND (sum7(10) OR product9(10)))
+ OR (sum7(10) AND product9(10)));
+  rtlcarry_121_12 <= ((rtlcarry_121_11 AND (sum7(11) OR product9(11)))
+ OR (sum7(11) AND product9(11)));
+  rtlcarry_121_13 <= ((rtlcarry_121_12 AND (sum7(12) OR product9(12)))
+ OR (sum7(12) AND product9(12)));
+  rtlcarry_121_14 <= ((rtlcarry_121_13 AND (sum7(13) OR product9(12)))
+ OR (sum7(13) AND product9(12)));
+  rtlcarry_121_15 <= ((rtlcarry_121_14 AND (sum7(14) OR product9(12)))
+ OR (sum7(14) AND product9(12)));
+  rtlcarry_124_1 <= (product8(0) AND sum6(0));
+  rtlcarry_124_2 <= ((rtlcarry_124_1 AND (sum6(1) OR product8(1))) OR
+ (sum6(1) AND product8(1)));
+  rtlcarry_124_3 <= ((rtlcarry_124_2 AND (sum6(2) OR product8(2))) OR
+ (sum6(2) AND product8(2)));
+  rtlcarry_124_4 <= ((rtlcarry_124_3 AND (sum6(3) OR product8(3))) OR
+ (sum6(3) AND product8(3)));
+  rtlcarry_124_5 <= ((rtlcarry_124_4 AND (sum6(4) OR product8(4))) OR
+ (sum6(4) AND product8(4)));
+  rtlcarry_124_6 <= ((rtlcarry_124_5 AND (sum6(5) OR product8(5))) OR
+ (sum6(5) AND product8(5)));
+  rtlcarry_124_7 <= ((rtlcarry_124_6 AND (sum6(6) OR product8(6))) OR
+ (sum6(6) AND product8(6)));
+  rtlcarry_124_8 <= ((rtlcarry_124_7 AND (sum6(7) OR product8(7))) OR
+ (sum6(7) AND product8(7)));
+  rtlcarry_124_9 <= ((rtlcarry_124_8 AND (sum6(8) OR product8(8))) OR
+ (sum6(8) AND product8(8)));
+  rtlcarry_124_10 <= ((rtlcarry_124_9 AND (sum6(9) OR product8(9))) OR
+ (sum6(9) AND product8(9)));
+  rtlcarry_124_11 <= ((rtlcarry_124_10 AND (sum6(10) OR product8(10)))
+ OR (sum6(10) AND product8(10)));
+  rtlcarry_124_12 <= ((rtlcarry_124_11 AND (sum6(11) OR product8(11)))
+ OR (sum6(11) AND product8(11)));
+  rtlcarry_124_13 <= ((rtlcarry_124_12 AND (sum6(12) OR product8(12)))
+ OR (sum6(12) AND product8(12)));
+  rtlcarry_124_14 <= ((rtlcarry_124_13 AND (sum6(13) OR product8(12)))
+ OR (sum6(13) AND product8(12)));
+  rtlcarry_124_15 <= ((rtlcarry_124_14 AND (sum6(14) OR product8(12)))
+ OR (sum6(14) AND product8(12)));
+  rtlcarry_127_1 <= (product7(0) AND sum5(0));
+  rtlcarry_127_2 <= ((rtlcarry_127_1 AND (sum5(1) OR product7(1))) OR
+ (sum5(1) AND product7(1)));
+  rtlcarry_127_3 <= ((rtlcarry_127_2 AND (sum5(2) OR product7(2))) OR
+ (sum5(2) AND product7(2)));
+  rtlcarry_127_4 <= ((rtlcarry_127_3 AND (sum5(3) OR product7(3))) OR
+ (sum5(3) AND product7(3)));
+  rtlcarry_127_5 <= ((rtlcarry_127_4 AND (sum5(4) OR product7(4))) OR
+ (sum5(4) AND product7(4)));
+  rtlcarry_127_6 <= ((rtlcarry_127_5 AND (sum5(5) OR product7(5))) OR
+ (sum5(5) AND product7(5)));
+  rtlcarry_127_7 <= ((rtlcarry_127_6 AND (sum5(6) OR product7(6))) OR
+ (sum5(6) AND product7(6)));
+  rtlcarry_127_8 <= ((rtlcarry_127_7 AND (sum5(7) OR product7(7))) OR
+ (sum5(7) AND product7(7)));
+  rtlcarry_127_9 <= ((rtlcarry_127_8 AND (sum5(8) OR product7(8))) OR
+ (sum5(8) AND product7(8)));
+  rtlcarry_127_10 <= ((rtlcarry_127_9 AND (sum5(9) OR product7(9))) OR
+ (sum5(9) AND product7(9)));
+  rtlcarry_127_11 <= ((rtlcarry_127_10 AND (sum5(10) OR product7(10)))
+ OR (sum5(10) AND product7(10)));
+  rtlcarry_127_12 <= ((rtlcarry_127_11 AND (sum5(11) OR product7(11)))
+ OR (sum5(11) AND product7(11)));
+  rtlcarry_127_13 <= ((rtlcarry_127_12 AND (sum5(12) OR product7(12)))
+ OR (sum5(12) AND product7(12)));
+  rtlcarry_127_14 <= ((rtlcarry_127_13 AND (sum5(13) OR product7(12)))
+ OR (sum5(13) AND product7(12)));
+  rtlcarry_127_15 <= ((rtlcarry_127_14 AND (sum5(14) OR product7(12)))
+ OR (sum5(14) AND product7(12)));
+  rtlcarry_130_1 <= (product6(0) AND sum4(0));
+  rtlcarry_130_2 <= ((rtlcarry_130_1 AND (sum4(1) OR product6(1))) OR
+ (sum4(1) AND product6(1)));
+  rtlcarry_130_3 <= ((rtlcarry_130_2 AND (sum4(2) OR product6(2))) OR
+ (sum4(2) AND product6(2)));
+  rtlcarry_130_4 <= ((rtlcarry_130_3 AND (sum4(3) OR product6(3))) OR
+ (sum4(3) AND product6(3)));
+  rtlcarry_130_5 <= ((rtlcarry_130_4 AND (sum4(4) OR product6(4))) OR
+ (sum4(4) AND product6(4)));
+  rtlcarry_130_6 <= ((rtlcarry_130_5 AND (sum4(5) OR product6(5))) OR
+ (sum4(5) AND product6(5)));
+  rtlcarry_130_7 <= ((rtlcarry_130_6 AND (sum4(6) OR product6(6))) OR
+ (sum4(6) AND product6(6)));
+  rtlcarry_130_8 <= ((rtlcarry_130_7 AND (sum4(7) OR product6(7))) OR
+ (sum4(7) AND product6(7)));
+  rtlcarry_130_9 <= ((rtlcarry_130_8 AND (sum4(8) OR product6(8))) OR
+ (sum4(8) AND product6(8)));
+  rtlcarry_130_10 <= ((rtlcarry_130_9 AND (sum4(9) OR product6(9))) OR
+ (sum4(9) AND product6(9)));
+  rtlcarry_130_11 <= ((rtlcarry_130_10 AND (sum4(10) OR product6(10)))
+ OR (sum4(10) AND product6(10)));
+  rtlcarry_130_12 <= ((rtlcarry_130_11 AND (sum4(11) OR product6(11)))
+ OR (sum4(11) AND product6(11)));
+  rtlcarry_130_13 <= ((rtlcarry_130_12 AND (sum4(12) OR product6(12)))
+ OR (sum4(12) AND product6(12)));
+  rtlcarry_130_14 <= ((rtlcarry_130_13 AND (sum4(13) OR product6(12)))
+ OR (sum4(13) AND product6(12)));
+  rtlcarry_130_15 <= ((rtlcarry_130_14 AND (sum4(14) OR product6(12)))
+ OR (sum4(14) AND product6(12)));
+  rtlcarry_133_1 <= (product5(0) AND sum3(0));
+  rtlcarry_133_2 <= ((rtlcarry_133_1 AND (sum3(1) OR product5(1))) OR
+ (sum3(1) AND product5(1)));
+  rtlcarry_133_3 <= ((rtlcarry_133_2 AND (sum3(2) OR product5(2))) OR
+ (sum3(2) AND product5(2)));
+  rtlcarry_133_4 <= ((rtlcarry_133_3 AND (sum3(3) OR product5(3))) OR
+ (sum3(3) AND product5(3)));
+  rtlcarry_133_5 <= ((rtlcarry_133_4 AND (sum3(4) OR product5(4))) OR
+ (sum3(4) AND product5(4)));
+  rtlcarry_133_6 <= ((rtlcarry_133_5 AND (sum3(5) OR product5(5))) OR
+ (sum3(5) AND product5(5)));
+  rtlcarry_133_7 <= ((rtlcarry_133_6 AND (sum3(6) OR product5(6))) OR
+ (sum3(6) AND product5(6)));
+  rtlcarry_133_8 <= ((rtlcarry_133_7 AND (sum3(7) OR product5(7))) OR
+ (sum3(7) AND product5(7)));
+  rtlcarry_133_9 <= ((rtlcarry_133_8 AND (sum3(8) OR product5(8))) OR
+ (sum3(8) AND product5(8)));
+  rtlcarry_133_10 <= ((rtlcarry_133_9 AND (sum3(9) OR product5(9))) OR
+ (sum3(9) AND product5(9)));
+  rtlcarry_133_11 <= ((rtlcarry_133_10 AND (sum3(10) OR product5(10)))
+ OR (sum3(10) AND product5(10)));
+  rtlcarry_133_12 <= ((rtlcarry_133_11 AND (sum3(11) OR product5(11)))
+ OR (sum3(11) AND product5(11)));
+  rtlcarry_133_13 <= ((rtlcarry_133_12 AND (sum3(12) OR product5(12)))
+ OR (sum3(12) AND product5(12)));
+  rtlcarry_133_14 <= ((rtlcarry_133_13 AND (sum3(13) OR product5(12)))
+ OR (sum3(13) AND product5(12)));
+  rtlcarry_133_15 <= ((rtlcarry_133_14 AND (sum3(14) OR product5(12)))
+ OR (sum3(14) AND product5(12)));
+  rtlcarry_136_1 <= (product4(0) AND sum2(0));
+  rtlcarry_136_2 <= ((rtlcarry_136_1 AND (sum2(1) OR product4(1))) OR
+ (sum2(1) AND product4(1)));
+  rtlcarry_136_3 <= ((rtlcarry_136_2 AND (sum2(2) OR product4(2))) OR
+ (sum2(2) AND product4(2)));
+  rtlcarry_136_4 <= ((rtlcarry_136_3 AND (sum2(3) OR product4(3))) OR
+ (sum2(3) AND product4(3)));
+  rtlcarry_136_5 <= ((rtlcarry_136_4 AND (sum2(4) OR product4(4))) OR
+ (sum2(4) AND product4(4)));
+  rtlcarry_136_6 <= ((rtlcarry_136_5 AND (sum2(5) OR product4(5))) OR
+ (sum2(5) AND product4(5)));
+  rtlcarry_136_7 <= ((rtlcarry_136_6 AND (sum2(6) OR product4(6))) OR
+ (sum2(6) AND product4(6)));
+  rtlcarry_136_8 <= ((rtlcarry_136_7 AND (sum2(7) OR product4(7))) OR
+ (sum2(7) AND product4(7)));
+  rtlcarry_136_9 <= ((rtlcarry_136_8 AND (sum2(8) OR product4(8))) OR
+ (sum2(8) AND product4(8)));
+  rtlcarry_136_10 <= ((rtlcarry_136_9 AND (sum2(9) OR product4(9))) OR
+ (sum2(9) AND product4(9)));
+  rtlcarry_136_11 <= ((rtlcarry_136_10 AND (sum2(10) OR product4(10)))
+ OR (sum2(10) AND product4(10)));
+  rtlcarry_136_12 <= ((rtlcarry_136_11 AND (sum2(11) OR product4(11)))
+ OR (sum2(11) AND product4(11)));
+  rtlcarry_136_13 <= ((rtlcarry_136_12 AND (sum2(12) OR product4(12)))
+ OR (sum2(12) AND product4(12)));
+  rtlcarry_136_14 <= ((rtlcarry_136_13 AND (sum2(13) OR product4(12)))
+ OR (sum2(13) AND product4(12)));
+  rtlcarry_136_15 <= ((rtlcarry_136_14 AND (sum2(14) OR product4(12)))
+ OR (sum2(14) AND product4(12)));
+  rtlcarry_139_1 <= (product3(0) AND sum1(0));
+  rtlcarry_139_2 <= ((rtlcarry_139_1 AND (sum1(1) OR product3(1))) OR
+ (sum1(1) AND product3(1)));
+  rtlcarry_139_3 <= ((rtlcarry_139_2 AND (sum1(2) OR product3(2))) OR
+ (sum1(2) AND product3(2)));
+  rtlcarry_139_4 <= ((rtlcarry_139_3 AND (sum1(3) OR product3(3))) OR
+ (sum1(3) AND product3(3)));
+  rtlcarry_139_5 <= ((rtlcarry_139_4 AND (sum1(4) OR product3(4))) OR
+ (sum1(4) AND product3(4)));
+  rtlcarry_139_6 <= ((rtlcarry_139_5 AND (sum1(5) OR product3(5))) OR
+ (sum1(5) AND product3(5)));
+  rtlcarry_139_7 <= ((rtlcarry_139_6 AND (sum1(6) OR product3(6))) OR
+ (sum1(6) AND product3(6)));
+  rtlcarry_139_8 <= ((rtlcarry_139_7 AND (sum1(7) OR product3(7))) OR
+ (sum1(7) AND product3(7)));
+  rtlcarry_139_9 <= ((rtlcarry_139_8 AND (sum1(8) OR product3(8))) OR
+ (sum1(8) AND product3(8)));
+  rtlcarry_139_10 <= ((rtlcarry_139_9 AND (sum1(9) OR product3(9))) OR
+ (sum1(9) AND product3(9)));
+  rtlcarry_139_11 <= ((rtlcarry_139_10 AND (sum1(10) OR product3(10)))
+ OR (sum1(10) AND product3(10)));
+  rtlcarry_139_12 <= ((rtlcarry_139_11 AND (sum1(11) OR product3(11)))
+ OR (sum1(11) AND product3(11)));
+  rtlcarry_139_13 <= ((rtlcarry_139_12 AND (sum1(12) OR product3(12)))
+ OR (sum1(12) AND product3(12)));
+  rtlcarry_139_14 <= ((rtlcarry_139_13 AND (sum1(13) OR product3(12)))
+ OR (sum1(13) AND product3(12)));
+  rtlcarry_139_15 <= ((rtlcarry_139_14 AND (sum1(14) OR product3(12)))
+ OR (sum1(14) AND product3(12)));
+  rtlcarry_142_1 <= (product2(0) AND product1_cast(0));
+  rtlcarry_142_2 <= ((rtlcarry_142_1 AND (product1_cast(1) OR 
+product2(1))) OR (product1_cast(1) AND product2(1)));
+  rtlcarry_142_3 <= ((rtlcarry_142_2 AND (product1_cast(2) OR 
+product2(2))) OR (product1_cast(2) AND product2(2)));
+  rtlcarry_142_4 <= ((rtlcarry_142_3 AND (product1_cast(3) OR 
+product2(3))) OR (product1_cast(3) AND product2(3)));
+  rtlcarry_142_5 <= ((rtlcarry_142_4 AND (product1_cast(4) OR 
+product2(4))) OR (product1_cast(4) AND product2(4)));
+  rtlcarry_142_6 <= ((rtlcarry_142_5 AND (product1_cast(5) OR 
+product2(5))) OR (product1_cast(5) AND product2(5)));
+  rtlcarry_142_7 <= ((rtlcarry_142_6 AND (product1_cast(6) OR 
+product2(6))) OR (product1_cast(6) AND product2(6)));
+  rtlcarry_142_8 <= ((rtlcarry_142_7 AND (product1_cast(7) OR 
+product2(7))) OR (product1_cast(7) AND product2(7)));
+  rtlcarry_142_9 <= ((rtlcarry_142_8 AND (product1_cast(8) OR 
+product2(8))) OR (product1_cast(8) AND product2(8)));
+  rtlcarry_142_10 <= ((rtlcarry_142_9 AND (product1_cast(9) OR 
+product2(9))) OR (product1_cast(9) AND product2(9)));
+  rtlcarry_142_11 <= ((rtlcarry_142_10 AND (product1_cast(10) OR 
+product2(10))) OR (product1_cast(10) AND product2(10)));
+  rtlcarry_142_12 <= ((rtlcarry_142_11 AND (product1_cast(11) OR 
+product2(11))) OR (product1_cast(11) AND product2(11)));
+  rtlcarry_142_13 <= ((rtlcarry_142_12 AND (product1_cast(12) OR 
+product2(12))) OR (product1_cast(12) AND product2(12)));
+  rtlcarry_142_14 <= ((rtlcarry_142_13 AND (product1_cast(13) OR 
+product2(12))) OR (product1_cast(13) AND product2(12)));
+  rtlcarry_142_15 <= ((rtlcarry_142_14 AND (product1_cast(14) OR 
+product2(12))) OR (product1_cast(14) AND product2(12)));
+  rtlcarry_145_3 <= '0';
+  rtlcarry_145_4 <= ((rtlcarry_145_3 AND (rtlcarry_90_3 OR 
+rtlcarry_95_3)) OR (rtlcarry_90_3 AND rtlcarry_95_3));
+  rtlcarry_145_5 <= '0';
+  rtlcarry_145_6 <= '0';
+  rtlcarry_145_7 <= '0';
+  rtlcarry_145_8 <= '0';
+  rtlcarry_145_9 <= '0';
+  rtlcarry_145_10 <= '0';
+  rtlcarry_145_11 <= (rtlcarry_145_10 AND aux16);
+  rtlcarry_146_3 <= '0';
+  rtlcarry_146_4 <= ((rtlcarry_146_3 AND (rtlcarry_80_3 OR 
+rtlcarry_85_3)) OR (rtlcarry_80_3 AND rtlcarry_85_3));
+  rtlcarry_146_5 <= '0';
+  rtlcarry_146_6 <= '0';
+  rtlcarry_146_7 <= '0';
+  rtlcarry_146_8 <= '0';
+  rtlcarry_146_9 <= '0';
+  rtlcarry_146_10 <= '0';
+  rtlcarry_146_11 <= (rtlcarry_146_10 AND aux19);
+  rtlcarry_147_3 <= '0';
+  rtlcarry_147_4 <= ((rtlcarry_147_3 AND (rtlcarry_70_3 OR 
+rtlcarry_75_3)) OR (rtlcarry_70_3 AND rtlcarry_75_3));
+  rtlcarry_147_5 <= '0';
+  rtlcarry_147_6 <= '0';
+  rtlcarry_147_7 <= '0';
+  rtlcarry_147_8 <= '0';
+  rtlcarry_147_9 <= '0';
+  rtlcarry_147_10 <= '0';
+  rtlcarry_147_11 <= (rtlcarry_147_10 AND aux22);
+  rtlcarry_148_3 <= '0';
+  rtlcarry_148_4 <= ((rtlcarry_148_3 AND (rtlcarry_65_3 OR 
+rtlcarry_60_3)) OR (rtlcarry_65_3 AND rtlcarry_60_3));
+  rtlcarry_148_5 <= '0';
+  rtlcarry_148_6 <= '0';
+  rtlcarry_148_7 <= '0';
+  rtlcarry_148_8 <= '0';
+  rtlcarry_148_9 <= '0';
+  rtlcarry_148_10 <= '0';
+  rtlcarry_148_11 <= (rtlcarry_148_10 AND aux25);
+  rtlcarry_149_3 <= '0';
+  rtlcarry_149_4 <= ((rtlcarry_149_3 AND (rtlcarry_50_3 OR 
+rtlcarry_55_3)) OR (rtlcarry_50_3 AND rtlcarry_55_3));
+  rtlcarry_149_5 <= '0';
+  rtlcarry_149_6 <= '0';
+  rtlcarry_149_7 <= '0';
+  rtlcarry_149_8 <= '0';
+  rtlcarry_149_9 <= '0';
+  rtlcarry_149_10 <= '0';
+  rtlcarry_149_11 <= (rtlcarry_149_10 AND aux28);
+  rtlcarry_150_3 <= '0';
+  rtlcarry_150_4 <= ((rtlcarry_150_3 AND (rtlcarry_40_3 OR 
+rtlcarry_45_3)) OR (rtlcarry_40_3 AND rtlcarry_45_3));
+  rtlcarry_150_5 <= '0';
+  rtlcarry_150_6 <= '0';
+  rtlcarry_150_7 <= '0';
+  rtlcarry_150_8 <= '0';
+  rtlcarry_150_9 <= '0';
+  rtlcarry_150_10 <= '0';
+  rtlcarry_150_11 <= (rtlcarry_150_10 AND aux31);
+  rtlcarry_151_3 <= '0';
+  rtlcarry_151_4 <= ((rtlcarry_151_3 AND (rtlcarry_35_3 OR 
+rtlcarry_30_3)) OR (rtlcarry_35_3 AND rtlcarry_30_3));
+  rtlcarry_151_5 <= '0';
+  rtlcarry_151_6 <= '0';
+  rtlcarry_151_7 <= '0';
+  rtlcarry_151_8 <= '0';
+  rtlcarry_151_9 <= '0';
+  rtlcarry_151_10 <= '0';
+  rtlcarry_151_11 <= (rtlcarry_151_10 AND aux34);
+  rtlcarry_152_3 <= '0';
+  rtlcarry_152_4 <= ((rtlcarry_152_3 AND (rtlcarry_20_3 OR 
+rtlcarry_25_3)) OR (rtlcarry_20_3 AND rtlcarry_25_3));
+  rtlcarry_152_5 <= '0';
+  rtlcarry_152_6 <= '0';
+  rtlcarry_152_7 <= '0';
+  rtlcarry_152_8 <= '0';
+  rtlcarry_152_9 <= '0';
+  rtlcarry_152_10 <= '0';
+  rtlcarry_152_11 <= (rtlcarry_152_10 AND aux37);
+  rtlcarry_153_3 <= '0';
+  rtlcarry_153_4 <= ((rtlcarry_153_3 AND (rtlcarry_10_3 OR 
+rtlcarry_15_3)) OR (rtlcarry_10_3 AND rtlcarry_15_3));
+  rtlcarry_153_5 <= '0';
+  rtlcarry_153_6 <= '0';
+  rtlcarry_153_7 <= '0';
+  rtlcarry_153_8 <= '0';
+  rtlcarry_153_9 <= '0';
+  rtlcarry_153_10 <= '0';
+  rtlcarry_153_11 <= (rtlcarry_153_10 AND aux39);
+  rtlcarry_154_3 <= '0';
+  rtlcarry_154_4 <= ((rtlcarry_154_3 AND (rtlcarry_0_3 OR 
+rtlcarry_5_3)) OR (rtlcarry_0_3 AND rtlcarry_5_3));
+  rtlcarry_154_5 <= '0';
+  rtlcarry_154_6 <= '0';
+  rtlcarry_154_7 <= '0';
+  rtlcarry_154_8 <= '0';
+  rtlcarry_154_9 <= '0';
+  rtlcarry_154_10 <= '0';
+  rtlcarry_154_11 <= '0';
+  label0 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (0) <= GUARDED output_typeconvert(0);
+  END BLOCK label0;
+  label1 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (1) <= GUARDED output_typeconvert(1);
+  END BLOCK label1;
+  label2 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (2) <= GUARDED output_typeconvert(2);
+  END BLOCK label2;
+  label3 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (3) <= GUARDED output_typeconvert(3);
+  END BLOCK label3;
+  label4 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (4) <= GUARDED output_typeconvert(4);
+  END BLOCK label4;
+  label5 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (5) <= GUARDED output_typeconvert(5);
+  END BLOCK label5;
+  label6 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (6) <= GUARDED output_typeconvert(6);
+  END BLOCK label6;
+  label7 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (7) <= GUARDED output_typeconvert(7);
+  END BLOCK label7;
+  label8 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (8) <= GUARDED output_typeconvert(8);
+  END BLOCK label8;
+  label9 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (9) <= GUARDED output_typeconvert(9);
+  END BLOCK label9;
+  label10 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (10) <= GUARDED output_typeconvert(10);
+  END BLOCK label10;
+  label11 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (11) <= GUARDED output_typeconvert(11);
+  END BLOCK label11;
+  label12 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (12) <= GUARDED output_typeconvert(12);
+  END BLOCK label12;
+  label13 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (13) <= GUARDED output_typeconvert(13);
+  END BLOCK label13;
+  label14 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (14) <= GUARDED output_typeconvert(14);
+  END BLOCK label14;
+  label15 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_register (15) <= GUARDED output_typeconvert(15);
+  END BLOCK label15;
+  label16 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (0) <= GUARDED sum15(0);
+  END BLOCK label16;
+  label17 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (1) <= GUARDED sum15(1);
+  END BLOCK label17;
+  label18 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (2) <= GUARDED sum15(2);
+  END BLOCK label18;
+  label19 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (3) <= GUARDED sum15(3);
+  END BLOCK label19;
+  label20 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (4) <= GUARDED sum15(4);
+  END BLOCK label20;
+  label21 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (5) <= GUARDED sum15(5);
+  END BLOCK label21;
+  label22 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (6) <= GUARDED sum15(6);
+  END BLOCK label22;
+  label23 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (7) <= GUARDED sum15(7);
+  END BLOCK label23;
+  label24 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (8) <= GUARDED sum15(8);
+  END BLOCK label24;
+  label25 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (9) <= GUARDED sum15(9);
+  END BLOCK label25;
+  label26 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (10) <= GUARDED sum15(10);
+  END BLOCK label26;
+  label27 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (11) <= GUARDED sum15(11);
+  END BLOCK label27;
+  label28 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (12) <= GUARDED sum15(12);
+  END BLOCK label28;
+  label29 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (13) <= GUARDED sum15(13);
+  END BLOCK label29;
+  label30 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (14) <= GUARDED sum15(14);
+  END BLOCK label30;
+  label31 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    output_typeconvert (15) <= GUARDED sum15(15);
+  END BLOCK label31;
+  label32 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (0) <= GUARDED (product16(0) XOR sum14(0));
+  END BLOCK label32;
+  label33 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (1) <= GUARDED (rtlcarry_100_1 XOR product16(1) XOR sum14(1));
+  END BLOCK label33;
+  label34 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (2) <= GUARDED (rtlcarry_100_2 XOR product16(2) XOR sum14(2));
+  END BLOCK label34;
+  label35 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (3) <= GUARDED (rtlcarry_100_3 XOR product16(3) XOR sum14(3));
+  END BLOCK label35;
+  label36 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (4) <= GUARDED (rtlcarry_100_4 XOR product16(4) XOR sum14(4));
+  END BLOCK label36;
+  label37 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (5) <= GUARDED (rtlcarry_100_5 XOR product16(5) XOR sum14(5));
+  END BLOCK label37;
+  label38 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (6) <= GUARDED (rtlcarry_100_6 XOR product16(6) XOR sum14(6));
+  END BLOCK label38;
+  label39 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (7) <= GUARDED (rtlcarry_100_7 XOR product16(7) XOR sum14(7));
+  END BLOCK label39;
+  label40 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (8) <= GUARDED (rtlcarry_100_8 XOR product16(8) XOR sum14(8));
+  END BLOCK label40;
+  label41 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (9) <= GUARDED (rtlcarry_100_9 XOR product16(9) XOR sum14(9));
+  END BLOCK label41;
+  label42 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (10) <= GUARDED (rtlcarry_100_10 XOR product16(10) XOR sum14(10));
+  END BLOCK label42;
+  label43 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (11) <= GUARDED (rtlcarry_100_11 XOR product16(11) XOR sum14(11));
+  END BLOCK label43;
+  label44 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (12) <= GUARDED (rtlcarry_100_12 XOR product16(12) XOR sum14(12));
+  END BLOCK label44;
+  label45 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (13) <= GUARDED (rtlcarry_100_13 XOR product16(12) XOR sum14(13));
+  END BLOCK label45;
+  label46 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (14) <= GUARDED (rtlcarry_100_14 XOR product16(12) XOR sum14(14));
+  END BLOCK label46;
+  label47 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (15) <= GUARDED (rtlcarry_100_15 XOR aux0);
+  END BLOCK label47;
+  label48 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_14 (16) <= GUARDED (((rtlcarry_100_15 AND (sum14(15) OR 
+product16(12))) OR (sum14(15) AND product16(12))) XOR aux0);
+  END BLOCK label48;
+  label49 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (0) <= GUARDED add_temp_14(0);
+  END BLOCK label49;
+  label50 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (1) <= GUARDED add_temp_14(1);
+  END BLOCK label50;
+  label51 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (2) <= GUARDED add_temp_14(2);
+  END BLOCK label51;
+  label52 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (3) <= GUARDED add_temp_14(3);
+  END BLOCK label52;
+  label53 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (4) <= GUARDED add_temp_14(4);
+  END BLOCK label53;
+  label54 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (5) <= GUARDED add_temp_14(5);
+  END BLOCK label54;
+  label55 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (6) <= GUARDED add_temp_14(6);
+  END BLOCK label55;
+  label56 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (7) <= GUARDED add_temp_14(7);
+  END BLOCK label56;
+  label57 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (8) <= GUARDED add_temp_14(8);
+  END BLOCK label57;
+  label58 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (9) <= GUARDED add_temp_14(9);
+  END BLOCK label58;
+  label59 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (10) <= GUARDED add_temp_14(10);
+  END BLOCK label59;
+  label60 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (11) <= GUARDED add_temp_14(11);
+  END BLOCK label60;
+  label61 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (12) <= GUARDED add_temp_14(12);
+  END BLOCK label61;
+  label62 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (13) <= GUARDED add_temp_14(13);
+  END BLOCK label62;
+  label63 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (14) <= GUARDED add_temp_14(14);
+  END BLOCK label63;
+  label64 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum15 (15) <= GUARDED add_temp_14(15);
+  END BLOCK label64;
+  label65 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (0) <= GUARDED (product15(0) XOR sum13(0));
+  END BLOCK label65;
+  label66 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (1) <= GUARDED (rtlcarry_103_1 XOR product15(1) XOR sum13(1));
+  END BLOCK label66;
+  label67 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (2) <= GUARDED (rtlcarry_103_2 XOR product15(2) XOR sum13(2));
+  END BLOCK label67;
+  label68 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (3) <= GUARDED (rtlcarry_103_3 XOR product15(3) XOR sum13(3));
+  END BLOCK label68;
+  label69 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (4) <= GUARDED (rtlcarry_103_4 XOR product15(4) XOR sum13(4));
+  END BLOCK label69;
+  label70 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (5) <= GUARDED (rtlcarry_103_5 XOR product15(5) XOR sum13(5));
+  END BLOCK label70;
+  label71 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (6) <= GUARDED (rtlcarry_103_6 XOR product15(6) XOR sum13(6));
+  END BLOCK label71;
+  label72 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (7) <= GUARDED (rtlcarry_103_7 XOR product15(7) XOR sum13(7));
+  END BLOCK label72;
+  label73 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (8) <= GUARDED (rtlcarry_103_8 XOR product15(8) XOR sum13(8));
+  END BLOCK label73;
+  label74 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (9) <= GUARDED (rtlcarry_103_9 XOR product15(9) XOR sum13(9));
+  END BLOCK label74;
+  label75 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (10) <= GUARDED (rtlcarry_103_10 XOR product15(10) XOR sum13(10));
+  END BLOCK label75;
+  label76 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (11) <= GUARDED (rtlcarry_103_11 XOR product15(11) XOR sum13(11));
+  END BLOCK label76;
+  label77 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (12) <= GUARDED (rtlcarry_103_12 XOR product15(12) XOR sum13(12));
+  END BLOCK label77;
+  label78 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (13) <= GUARDED (rtlcarry_103_13 XOR product15(12) XOR sum13(13));
+  END BLOCK label78;
+  label79 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (14) <= GUARDED (rtlcarry_103_14 XOR product15(12) XOR sum13(14));
+  END BLOCK label79;
+  label80 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (15) <= GUARDED (rtlcarry_103_15 XOR aux1);
+  END BLOCK label80;
+  label81 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_13 (16) <= GUARDED (((rtlcarry_103_15 AND (sum13(15) OR 
+product15(12))) OR (sum13(15) AND product15(12))) XOR aux1);
+  END BLOCK label81;
+  label82 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (0) <= GUARDED add_temp_13(0);
+  END BLOCK label82;
+  label83 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (1) <= GUARDED add_temp_13(1);
+  END BLOCK label83;
+  label84 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (2) <= GUARDED add_temp_13(2);
+  END BLOCK label84;
+  label85 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (3) <= GUARDED add_temp_13(3);
+  END BLOCK label85;
+  label86 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (4) <= GUARDED add_temp_13(4);
+  END BLOCK label86;
+  label87 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (5) <= GUARDED add_temp_13(5);
+  END BLOCK label87;
+  label88 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (6) <= GUARDED add_temp_13(6);
+  END BLOCK label88;
+  label89 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (7) <= GUARDED add_temp_13(7);
+  END BLOCK label89;
+  label90 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (8) <= GUARDED add_temp_13(8);
+  END BLOCK label90;
+  label91 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (9) <= GUARDED add_temp_13(9);
+  END BLOCK label91;
+  label92 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (10) <= GUARDED add_temp_13(10);
+  END BLOCK label92;
+  label93 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (11) <= GUARDED add_temp_13(11);
+  END BLOCK label93;
+  label94 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (12) <= GUARDED add_temp_13(12);
+  END BLOCK label94;
+  label95 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (13) <= GUARDED add_temp_13(13);
+  END BLOCK label95;
+  label96 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (14) <= GUARDED add_temp_13(14);
+  END BLOCK label96;
+  label97 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum14 (15) <= GUARDED add_temp_13(15);
+  END BLOCK label97;
+  label98 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (0) <= GUARDED (product14(0) XOR sum12(0));
+  END BLOCK label98;
+  label99 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (1) <= GUARDED (rtlcarry_106_1 XOR product14(1) XOR sum12(1));
+  END BLOCK label99;
+  label100 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (2) <= GUARDED (rtlcarry_106_2 XOR product14(2) XOR sum12(2));
+  END BLOCK label100;
+  label101 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (3) <= GUARDED (rtlcarry_106_3 XOR product14(3) XOR sum12(3));
+  END BLOCK label101;
+  label102 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (4) <= GUARDED (rtlcarry_106_4 XOR product14(4) XOR sum12(4));
+  END BLOCK label102;
+  label103 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (5) <= GUARDED (rtlcarry_106_5 XOR product14(5) XOR sum12(5));
+  END BLOCK label103;
+  label104 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (6) <= GUARDED (rtlcarry_106_6 XOR product14(6) XOR sum12(6));
+  END BLOCK label104;
+  label105 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (7) <= GUARDED (rtlcarry_106_7 XOR product14(7) XOR sum12(7));
+  END BLOCK label105;
+  label106 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (8) <= GUARDED (rtlcarry_106_8 XOR product14(8) XOR sum12(8));
+  END BLOCK label106;
+  label107 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (9) <= GUARDED (rtlcarry_106_9 XOR product14(9) XOR sum12(9));
+  END BLOCK label107;
+  label108 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (10) <= GUARDED (rtlcarry_106_10 XOR product14(10) XOR sum12(10));
+  END BLOCK label108;
+  label109 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (11) <= GUARDED (rtlcarry_106_11 XOR product14(11) XOR sum12(11));
+  END BLOCK label109;
+  label110 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (12) <= GUARDED (rtlcarry_106_12 XOR product14(12) XOR sum12(12));
+  END BLOCK label110;
+  label111 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (13) <= GUARDED (rtlcarry_106_13 XOR product14(12) XOR sum12(13));
+  END BLOCK label111;
+  label112 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (14) <= GUARDED (rtlcarry_106_14 XOR product14(12) XOR sum12(14));
+  END BLOCK label112;
+  label113 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (15) <= GUARDED (rtlcarry_106_15 XOR aux2);
+  END BLOCK label113;
+  label114 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_12 (16) <= GUARDED (((rtlcarry_106_15 AND (sum12(15) OR 
+product14(12))) OR (sum12(15) AND product14(12))) XOR aux2);
+  END BLOCK label114;
+  label115 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (0) <= GUARDED add_temp_12(0);
+  END BLOCK label115;
+  label116 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (1) <= GUARDED add_temp_12(1);
+  END BLOCK label116;
+  label117 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (2) <= GUARDED add_temp_12(2);
+  END BLOCK label117;
+  label118 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (3) <= GUARDED add_temp_12(3);
+  END BLOCK label118;
+  label119 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (4) <= GUARDED add_temp_12(4);
+  END BLOCK label119;
+  label120 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (5) <= GUARDED add_temp_12(5);
+  END BLOCK label120;
+  label121 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (6) <= GUARDED add_temp_12(6);
+  END BLOCK label121;
+  label122 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (7) <= GUARDED add_temp_12(7);
+  END BLOCK label122;
+  label123 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (8) <= GUARDED add_temp_12(8);
+  END BLOCK label123;
+  label124 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (9) <= GUARDED add_temp_12(9);
+  END BLOCK label124;
+  label125 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (10) <= GUARDED add_temp_12(10);
+  END BLOCK label125;
+  label126 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (11) <= GUARDED add_temp_12(11);
+  END BLOCK label126;
+  label127 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (12) <= GUARDED add_temp_12(12);
+  END BLOCK label127;
+  label128 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (13) <= GUARDED add_temp_12(13);
+  END BLOCK label128;
+  label129 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (14) <= GUARDED add_temp_12(14);
+  END BLOCK label129;
+  label130 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum13 (15) <= GUARDED add_temp_12(15);
+  END BLOCK label130;
+  label131 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (0) <= GUARDED (product13(0) XOR sum11(0));
+  END BLOCK label131;
+  label132 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (1) <= GUARDED (rtlcarry_109_1 XOR product13(1) XOR sum11(1));
+  END BLOCK label132;
+  label133 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (2) <= GUARDED (rtlcarry_109_2 XOR product13(2) XOR sum11(2));
+  END BLOCK label133;
+  label134 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (3) <= GUARDED (rtlcarry_109_3 XOR product13(3) XOR sum11(3));
+  END BLOCK label134;
+  label135 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (4) <= GUARDED (rtlcarry_109_4 XOR product13(4) XOR sum11(4));
+  END BLOCK label135;
+  label136 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (5) <= GUARDED (rtlcarry_109_5 XOR product13(5) XOR sum11(5));
+  END BLOCK label136;
+  label137 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (6) <= GUARDED (rtlcarry_109_6 XOR product13(6) XOR sum11(6));
+  END BLOCK label137;
+  label138 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (7) <= GUARDED (rtlcarry_109_7 XOR product13(7) XOR sum11(7));
+  END BLOCK label138;
+  label139 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (8) <= GUARDED (rtlcarry_109_8 XOR product13(8) XOR sum11(8));
+  END BLOCK label139;
+  label140 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (9) <= GUARDED (rtlcarry_109_9 XOR product13(9) XOR sum11(9));
+  END BLOCK label140;
+  label141 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (10) <= GUARDED (rtlcarry_109_10 XOR product13(10) XOR sum11(10));
+  END BLOCK label141;
+  label142 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (11) <= GUARDED (rtlcarry_109_11 XOR product13(11) XOR sum11(11));
+  END BLOCK label142;
+  label143 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (12) <= GUARDED (rtlcarry_109_12 XOR product13(12) XOR sum11(12));
+  END BLOCK label143;
+  label144 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (13) <= GUARDED (rtlcarry_109_13 XOR product13(12) XOR sum11(13));
+  END BLOCK label144;
+  label145 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (14) <= GUARDED (rtlcarry_109_14 XOR product13(12) XOR sum11(14));
+  END BLOCK label145;
+  label146 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (15) <= GUARDED (rtlcarry_109_15 XOR aux3);
+  END BLOCK label146;
+  label147 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_11 (16) <= GUARDED (((rtlcarry_109_15 AND (sum11(15) OR 
+product13(12))) OR (sum11(15) AND product13(12))) XOR aux3);
+  END BLOCK label147;
+  label148 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (0) <= GUARDED add_temp_11(0);
+  END BLOCK label148;
+  label149 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (1) <= GUARDED add_temp_11(1);
+  END BLOCK label149;
+  label150 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (2) <= GUARDED add_temp_11(2);
+  END BLOCK label150;
+  label151 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (3) <= GUARDED add_temp_11(3);
+  END BLOCK label151;
+  label152 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (4) <= GUARDED add_temp_11(4);
+  END BLOCK label152;
+  label153 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (5) <= GUARDED add_temp_11(5);
+  END BLOCK label153;
+  label154 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (6) <= GUARDED add_temp_11(6);
+  END BLOCK label154;
+  label155 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (7) <= GUARDED add_temp_11(7);
+  END BLOCK label155;
+  label156 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (8) <= GUARDED add_temp_11(8);
+  END BLOCK label156;
+  label157 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (9) <= GUARDED add_temp_11(9);
+  END BLOCK label157;
+  label158 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (10) <= GUARDED add_temp_11(10);
+  END BLOCK label158;
+  label159 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (11) <= GUARDED add_temp_11(11);
+  END BLOCK label159;
+  label160 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (12) <= GUARDED add_temp_11(12);
+  END BLOCK label160;
+  label161 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (13) <= GUARDED add_temp_11(13);
+  END BLOCK label161;
+  label162 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (14) <= GUARDED add_temp_11(14);
+  END BLOCK label162;
+  label163 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum12 (15) <= GUARDED add_temp_11(15);
+  END BLOCK label163;
+  label164 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (0) <= GUARDED (product12(0) XOR sum10(0));
+  END BLOCK label164;
+  label165 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (1) <= GUARDED (rtlcarry_112_1 XOR product12(1) XOR sum10(1));
+  END BLOCK label165;
+  label166 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (2) <= GUARDED (rtlcarry_112_2 XOR product12(2) XOR sum10(2));
+  END BLOCK label166;
+  label167 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (3) <= GUARDED (rtlcarry_112_3 XOR product12(3) XOR sum10(3));
+  END BLOCK label167;
+  label168 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (4) <= GUARDED (rtlcarry_112_4 XOR product12(4) XOR sum10(4));
+  END BLOCK label168;
+  label169 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (5) <= GUARDED (rtlcarry_112_5 XOR product12(5) XOR sum10(5));
+  END BLOCK label169;
+  label170 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (6) <= GUARDED (rtlcarry_112_6 XOR product12(6) XOR sum10(6));
+  END BLOCK label170;
+  label171 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (7) <= GUARDED (rtlcarry_112_7 XOR product12(7) XOR sum10(7));
+  END BLOCK label171;
+  label172 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (8) <= GUARDED (rtlcarry_112_8 XOR product12(8) XOR sum10(8));
+  END BLOCK label172;
+  label173 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (9) <= GUARDED (rtlcarry_112_9 XOR product12(9) XOR sum10(9));
+  END BLOCK label173;
+  label174 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (10) <= GUARDED (rtlcarry_112_10 XOR product12(10) XOR sum10(10));
+  END BLOCK label174;
+  label175 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (11) <= GUARDED (rtlcarry_112_11 XOR product12(11) XOR sum10(11));
+  END BLOCK label175;
+  label176 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (12) <= GUARDED (rtlcarry_112_12 XOR product12(12) XOR sum10(12));
+  END BLOCK label176;
+  label177 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (13) <= GUARDED (rtlcarry_112_13 XOR product12(12) XOR sum10(13));
+  END BLOCK label177;
+  label178 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (14) <= GUARDED (rtlcarry_112_14 XOR product12(12) XOR sum10(14));
+  END BLOCK label178;
+  label179 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (15) <= GUARDED (rtlcarry_112_15 XOR aux4);
+  END BLOCK label179;
+  label180 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_10 (16) <= GUARDED (((rtlcarry_112_15 AND (sum10(15) OR 
+product12(12))) OR (sum10(15) AND product12(12))) XOR aux4);
+  END BLOCK label180;
+  label181 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (0) <= GUARDED add_temp_10(0);
+  END BLOCK label181;
+  label182 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (1) <= GUARDED add_temp_10(1);
+  END BLOCK label182;
+  label183 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (2) <= GUARDED add_temp_10(2);
+  END BLOCK label183;
+  label184 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (3) <= GUARDED add_temp_10(3);
+  END BLOCK label184;
+  label185 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (4) <= GUARDED add_temp_10(4);
+  END BLOCK label185;
+  label186 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (5) <= GUARDED add_temp_10(5);
+  END BLOCK label186;
+  label187 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (6) <= GUARDED add_temp_10(6);
+  END BLOCK label187;
+  label188 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (7) <= GUARDED add_temp_10(7);
+  END BLOCK label188;
+  label189 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (8) <= GUARDED add_temp_10(8);
+  END BLOCK label189;
+  label190 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (9) <= GUARDED add_temp_10(9);
+  END BLOCK label190;
+  label191 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (10) <= GUARDED add_temp_10(10);
+  END BLOCK label191;
+  label192 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (11) <= GUARDED add_temp_10(11);
+  END BLOCK label192;
+  label193 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (12) <= GUARDED add_temp_10(12);
+  END BLOCK label193;
+  label194 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (13) <= GUARDED add_temp_10(13);
+  END BLOCK label194;
+  label195 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (14) <= GUARDED add_temp_10(14);
+  END BLOCK label195;
+  label196 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum11 (15) <= GUARDED add_temp_10(15);
+  END BLOCK label196;
+  label197 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (0) <= GUARDED (product11(0) XOR sum9(0));
+  END BLOCK label197;
+  label198 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (1) <= GUARDED (rtlcarry_115_1 XOR product11(1) XOR sum9(1));
+  END BLOCK label198;
+  label199 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (2) <= GUARDED (rtlcarry_115_2 XOR product11(2) XOR sum9(2));
+  END BLOCK label199;
+  label200 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (3) <= GUARDED (rtlcarry_115_3 XOR product11(3) XOR sum9(3));
+  END BLOCK label200;
+  label201 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (4) <= GUARDED (rtlcarry_115_4 XOR product11(4) XOR sum9(4));
+  END BLOCK label201;
+  label202 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (5) <= GUARDED (rtlcarry_115_5 XOR product11(5) XOR sum9(5));
+  END BLOCK label202;
+  label203 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (6) <= GUARDED (rtlcarry_115_6 XOR product11(6) XOR sum9(6));
+  END BLOCK label203;
+  label204 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (7) <= GUARDED (rtlcarry_115_7 XOR product11(7) XOR sum9(7));
+  END BLOCK label204;
+  label205 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (8) <= GUARDED (rtlcarry_115_8 XOR product11(8) XOR sum9(8));
+  END BLOCK label205;
+  label206 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (9) <= GUARDED (rtlcarry_115_9 XOR product11(9) XOR sum9(9));
+  END BLOCK label206;
+  label207 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (10) <= GUARDED (rtlcarry_115_10 XOR product11(10) XOR sum9(10));
+  END BLOCK label207;
+  label208 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (11) <= GUARDED (rtlcarry_115_11 XOR product11(11) XOR sum9(11));
+  END BLOCK label208;
+  label209 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (12) <= GUARDED (rtlcarry_115_12 XOR product11(12) XOR sum9(12));
+  END BLOCK label209;
+  label210 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (13) <= GUARDED (rtlcarry_115_13 XOR product11(12) XOR sum9(13));
+  END BLOCK label210;
+  label211 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (14) <= GUARDED (rtlcarry_115_14 XOR product11(12) XOR sum9(14));
+  END BLOCK label211;
+  label212 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (15) <= GUARDED (rtlcarry_115_15 XOR aux5);
+  END BLOCK label212;
+  label213 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_9 (16) <= GUARDED (((rtlcarry_115_15 AND (sum9(15) OR product11(12)
+)) OR (sum9(15) AND product11(12))) XOR aux5);
+  END BLOCK label213;
+  label214 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (0) <= GUARDED add_temp_9(0);
+  END BLOCK label214;
+  label215 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (1) <= GUARDED add_temp_9(1);
+  END BLOCK label215;
+  label216 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (2) <= GUARDED add_temp_9(2);
+  END BLOCK label216;
+  label217 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (3) <= GUARDED add_temp_9(3);
+  END BLOCK label217;
+  label218 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (4) <= GUARDED add_temp_9(4);
+  END BLOCK label218;
+  label219 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (5) <= GUARDED add_temp_9(5);
+  END BLOCK label219;
+  label220 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (6) <= GUARDED add_temp_9(6);
+  END BLOCK label220;
+  label221 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (7) <= GUARDED add_temp_9(7);
+  END BLOCK label221;
+  label222 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (8) <= GUARDED add_temp_9(8);
+  END BLOCK label222;
+  label223 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (9) <= GUARDED add_temp_9(9);
+  END BLOCK label223;
+  label224 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (10) <= GUARDED add_temp_9(10);
+  END BLOCK label224;
+  label225 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (11) <= GUARDED add_temp_9(11);
+  END BLOCK label225;
+  label226 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (12) <= GUARDED add_temp_9(12);
+  END BLOCK label226;
+  label227 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (13) <= GUARDED add_temp_9(13);
+  END BLOCK label227;
+  label228 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (14) <= GUARDED add_temp_9(14);
+  END BLOCK label228;
+  label229 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum10 (15) <= GUARDED add_temp_9(15);
+  END BLOCK label229;
+  label230 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (0) <= GUARDED (product10(0) XOR sum8(0));
+  END BLOCK label230;
+  label231 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (1) <= GUARDED (rtlcarry_118_1 XOR product10(1) XOR sum8(1));
+  END BLOCK label231;
+  label232 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (2) <= GUARDED (rtlcarry_118_2 XOR product10(2) XOR sum8(2));
+  END BLOCK label232;
+  label233 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (3) <= GUARDED (rtlcarry_118_3 XOR product10(3) XOR sum8(3));
+  END BLOCK label233;
+  label234 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (4) <= GUARDED (rtlcarry_118_4 XOR product10(4) XOR sum8(4));
+  END BLOCK label234;
+  label235 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (5) <= GUARDED (rtlcarry_118_5 XOR product10(5) XOR sum8(5));
+  END BLOCK label235;
+  label236 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (6) <= GUARDED (rtlcarry_118_6 XOR product10(6) XOR sum8(6));
+  END BLOCK label236;
+  label237 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (7) <= GUARDED (rtlcarry_118_7 XOR product10(7) XOR sum8(7));
+  END BLOCK label237;
+  label238 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (8) <= GUARDED (rtlcarry_118_8 XOR product10(8) XOR sum8(8));
+  END BLOCK label238;
+  label239 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (9) <= GUARDED (rtlcarry_118_9 XOR product10(9) XOR sum8(9));
+  END BLOCK label239;
+  label240 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (10) <= GUARDED (rtlcarry_118_10 XOR product10(10) XOR sum8(10));
+  END BLOCK label240;
+  label241 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (11) <= GUARDED (rtlcarry_118_11 XOR product10(11) XOR sum8(11));
+  END BLOCK label241;
+  label242 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (12) <= GUARDED (rtlcarry_118_12 XOR product10(12) XOR sum8(12));
+  END BLOCK label242;
+  label243 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (13) <= GUARDED (rtlcarry_118_13 XOR product10(12) XOR sum8(13));
+  END BLOCK label243;
+  label244 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (14) <= GUARDED (rtlcarry_118_14 XOR product10(12) XOR sum8(14));
+  END BLOCK label244;
+  label245 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (15) <= GUARDED (rtlcarry_118_15 XOR aux6);
+  END BLOCK label245;
+  label246 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_8 (16) <= GUARDED (((rtlcarry_118_15 AND (sum8(15) OR product10(12)
+)) OR (sum8(15) AND product10(12))) XOR aux6);
+  END BLOCK label246;
+  label247 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (0) <= GUARDED add_temp_8(0);
+  END BLOCK label247;
+  label248 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (1) <= GUARDED add_temp_8(1);
+  END BLOCK label248;
+  label249 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (2) <= GUARDED add_temp_8(2);
+  END BLOCK label249;
+  label250 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (3) <= GUARDED add_temp_8(3);
+  END BLOCK label250;
+  label251 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (4) <= GUARDED add_temp_8(4);
+  END BLOCK label251;
+  label252 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (5) <= GUARDED add_temp_8(5);
+  END BLOCK label252;
+  label253 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (6) <= GUARDED add_temp_8(6);
+  END BLOCK label253;
+  label254 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (7) <= GUARDED add_temp_8(7);
+  END BLOCK label254;
+  label255 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (8) <= GUARDED add_temp_8(8);
+  END BLOCK label255;
+  label256 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (9) <= GUARDED add_temp_8(9);
+  END BLOCK label256;
+  label257 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (10) <= GUARDED add_temp_8(10);
+  END BLOCK label257;
+  label258 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (11) <= GUARDED add_temp_8(11);
+  END BLOCK label258;
+  label259 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (12) <= GUARDED add_temp_8(12);
+  END BLOCK label259;
+  label260 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (13) <= GUARDED add_temp_8(13);
+  END BLOCK label260;
+  label261 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (14) <= GUARDED add_temp_8(14);
+  END BLOCK label261;
+  label262 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum9 (15) <= GUARDED add_temp_8(15);
+  END BLOCK label262;
+  label263 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (0) <= GUARDED (product9(0) XOR sum7(0));
+  END BLOCK label263;
+  label264 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (1) <= GUARDED (rtlcarry_121_1 XOR product9(1) XOR sum7(1));
+  END BLOCK label264;
+  label265 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (2) <= GUARDED (rtlcarry_121_2 XOR product9(2) XOR sum7(2));
+  END BLOCK label265;
+  label266 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (3) <= GUARDED (rtlcarry_121_3 XOR product9(3) XOR sum7(3));
+  END BLOCK label266;
+  label267 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (4) <= GUARDED (rtlcarry_121_4 XOR product9(4) XOR sum7(4));
+  END BLOCK label267;
+  label268 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (5) <= GUARDED (rtlcarry_121_5 XOR product9(5) XOR sum7(5));
+  END BLOCK label268;
+  label269 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (6) <= GUARDED (rtlcarry_121_6 XOR product9(6) XOR sum7(6));
+  END BLOCK label269;
+  label270 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (7) <= GUARDED (rtlcarry_121_7 XOR product9(7) XOR sum7(7));
+  END BLOCK label270;
+  label271 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (8) <= GUARDED (rtlcarry_121_8 XOR product9(8) XOR sum7(8));
+  END BLOCK label271;
+  label272 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (9) <= GUARDED (rtlcarry_121_9 XOR product9(9) XOR sum7(9));
+  END BLOCK label272;
+  label273 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (10) <= GUARDED (rtlcarry_121_10 XOR product9(10) XOR sum7(10));
+  END BLOCK label273;
+  label274 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (11) <= GUARDED (rtlcarry_121_11 XOR product9(11) XOR sum7(11));
+  END BLOCK label274;
+  label275 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (12) <= GUARDED (rtlcarry_121_12 XOR product9(12) XOR sum7(12));
+  END BLOCK label275;
+  label276 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (13) <= GUARDED (rtlcarry_121_13 XOR product9(12) XOR sum7(13));
+  END BLOCK label276;
+  label277 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (14) <= GUARDED (rtlcarry_121_14 XOR product9(12) XOR sum7(14));
+  END BLOCK label277;
+  label278 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (15) <= GUARDED (rtlcarry_121_15 XOR aux7);
+  END BLOCK label278;
+  label279 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_7 (16) <= GUARDED (((rtlcarry_121_15 AND (sum7(15) OR product9(12))
+) OR (sum7(15) AND product9(12))) XOR aux7);
+  END BLOCK label279;
+  label280 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (0) <= GUARDED add_temp_7(0);
+  END BLOCK label280;
+  label281 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (1) <= GUARDED add_temp_7(1);
+  END BLOCK label281;
+  label282 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (2) <= GUARDED add_temp_7(2);
+  END BLOCK label282;
+  label283 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (3) <= GUARDED add_temp_7(3);
+  END BLOCK label283;
+  label284 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (4) <= GUARDED add_temp_7(4);
+  END BLOCK label284;
+  label285 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (5) <= GUARDED add_temp_7(5);
+  END BLOCK label285;
+  label286 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (6) <= GUARDED add_temp_7(6);
+  END BLOCK label286;
+  label287 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (7) <= GUARDED add_temp_7(7);
+  END BLOCK label287;
+  label288 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (8) <= GUARDED add_temp_7(8);
+  END BLOCK label288;
+  label289 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (9) <= GUARDED add_temp_7(9);
+  END BLOCK label289;
+  label290 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (10) <= GUARDED add_temp_7(10);
+  END BLOCK label290;
+  label291 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (11) <= GUARDED add_temp_7(11);
+  END BLOCK label291;
+  label292 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (12) <= GUARDED add_temp_7(12);
+  END BLOCK label292;
+  label293 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (13) <= GUARDED add_temp_7(13);
+  END BLOCK label293;
+  label294 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (14) <= GUARDED add_temp_7(14);
+  END BLOCK label294;
+  label295 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum8 (15) <= GUARDED add_temp_7(15);
+  END BLOCK label295;
+  label296 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (0) <= GUARDED (product8(0) XOR sum6(0));
+  END BLOCK label296;
+  label297 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (1) <= GUARDED (rtlcarry_124_1 XOR product8(1) XOR sum6(1));
+  END BLOCK label297;
+  label298 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (2) <= GUARDED (rtlcarry_124_2 XOR product8(2) XOR sum6(2));
+  END BLOCK label298;
+  label299 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (3) <= GUARDED (rtlcarry_124_3 XOR product8(3) XOR sum6(3));
+  END BLOCK label299;
+  label300 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (4) <= GUARDED (rtlcarry_124_4 XOR product8(4) XOR sum6(4));
+  END BLOCK label300;
+  label301 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (5) <= GUARDED (rtlcarry_124_5 XOR product8(5) XOR sum6(5));
+  END BLOCK label301;
+  label302 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (6) <= GUARDED (rtlcarry_124_6 XOR product8(6) XOR sum6(6));
+  END BLOCK label302;
+  label303 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (7) <= GUARDED (rtlcarry_124_7 XOR product8(7) XOR sum6(7));
+  END BLOCK label303;
+  label304 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (8) <= GUARDED (rtlcarry_124_8 XOR product8(8) XOR sum6(8));
+  END BLOCK label304;
+  label305 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (9) <= GUARDED (rtlcarry_124_9 XOR product8(9) XOR sum6(9));
+  END BLOCK label305;
+  label306 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (10) <= GUARDED (rtlcarry_124_10 XOR product8(10) XOR sum6(10));
+  END BLOCK label306;
+  label307 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (11) <= GUARDED (rtlcarry_124_11 XOR product8(11) XOR sum6(11));
+  END BLOCK label307;
+  label308 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (12) <= GUARDED (rtlcarry_124_12 XOR product8(12) XOR sum6(12));
+  END BLOCK label308;
+  label309 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (13) <= GUARDED (rtlcarry_124_13 XOR product8(12) XOR sum6(13));
+  END BLOCK label309;
+  label310 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (14) <= GUARDED (rtlcarry_124_14 XOR product8(12) XOR sum6(14));
+  END BLOCK label310;
+  label311 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (15) <= GUARDED (rtlcarry_124_15 XOR aux8);
+  END BLOCK label311;
+  label312 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_6 (16) <= GUARDED (((rtlcarry_124_15 AND (sum6(15) OR product8(12))
+) OR (sum6(15) AND product8(12))) XOR aux8);
+  END BLOCK label312;
+  label313 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (0) <= GUARDED add_temp_6(0);
+  END BLOCK label313;
+  label314 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (1) <= GUARDED add_temp_6(1);
+  END BLOCK label314;
+  label315 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (2) <= GUARDED add_temp_6(2);
+  END BLOCK label315;
+  label316 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (3) <= GUARDED add_temp_6(3);
+  END BLOCK label316;
+  label317 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (4) <= GUARDED add_temp_6(4);
+  END BLOCK label317;
+  label318 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (5) <= GUARDED add_temp_6(5);
+  END BLOCK label318;
+  label319 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (6) <= GUARDED add_temp_6(6);
+  END BLOCK label319;
+  label320 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (7) <= GUARDED add_temp_6(7);
+  END BLOCK label320;
+  label321 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (8) <= GUARDED add_temp_6(8);
+  END BLOCK label321;
+  label322 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (9) <= GUARDED add_temp_6(9);
+  END BLOCK label322;
+  label323 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (10) <= GUARDED add_temp_6(10);
+  END BLOCK label323;
+  label324 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (11) <= GUARDED add_temp_6(11);
+  END BLOCK label324;
+  label325 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (12) <= GUARDED add_temp_6(12);
+  END BLOCK label325;
+  label326 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (13) <= GUARDED add_temp_6(13);
+  END BLOCK label326;
+  label327 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (14) <= GUARDED add_temp_6(14);
+  END BLOCK label327;
+  label328 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum7 (15) <= GUARDED add_temp_6(15);
+  END BLOCK label328;
+  label329 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (0) <= GUARDED (product7(0) XOR sum5(0));
+  END BLOCK label329;
+  label330 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (1) <= GUARDED (rtlcarry_127_1 XOR product7(1) XOR sum5(1));
+  END BLOCK label330;
+  label331 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (2) <= GUARDED (rtlcarry_127_2 XOR product7(2) XOR sum5(2));
+  END BLOCK label331;
+  label332 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (3) <= GUARDED (rtlcarry_127_3 XOR product7(3) XOR sum5(3));
+  END BLOCK label332;
+  label333 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (4) <= GUARDED (rtlcarry_127_4 XOR product7(4) XOR sum5(4));
+  END BLOCK label333;
+  label334 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (5) <= GUARDED (rtlcarry_127_5 XOR product7(5) XOR sum5(5));
+  END BLOCK label334;
+  label335 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (6) <= GUARDED (rtlcarry_127_6 XOR product7(6) XOR sum5(6));
+  END BLOCK label335;
+  label336 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (7) <= GUARDED (rtlcarry_127_7 XOR product7(7) XOR sum5(7));
+  END BLOCK label336;
+  label337 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (8) <= GUARDED (rtlcarry_127_8 XOR product7(8) XOR sum5(8));
+  END BLOCK label337;
+  label338 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (9) <= GUARDED (rtlcarry_127_9 XOR product7(9) XOR sum5(9));
+  END BLOCK label338;
+  label339 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (10) <= GUARDED (rtlcarry_127_10 XOR product7(10) XOR sum5(10));
+  END BLOCK label339;
+  label340 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (11) <= GUARDED (rtlcarry_127_11 XOR product7(11) XOR sum5(11));
+  END BLOCK label340;
+  label341 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (12) <= GUARDED (rtlcarry_127_12 XOR product7(12) XOR sum5(12));
+  END BLOCK label341;
+  label342 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (13) <= GUARDED (rtlcarry_127_13 XOR product7(12) XOR sum5(13));
+  END BLOCK label342;
+  label343 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (14) <= GUARDED (rtlcarry_127_14 XOR product7(12) XOR sum5(14));
+  END BLOCK label343;
+  label344 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (15) <= GUARDED (rtlcarry_127_15 XOR aux9);
+  END BLOCK label344;
+  label345 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_5 (16) <= GUARDED (((rtlcarry_127_15 AND (sum5(15) OR product7(12))
+) OR (sum5(15) AND product7(12))) XOR aux9);
+  END BLOCK label345;
+  label346 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (0) <= GUARDED add_temp_5(0);
+  END BLOCK label346;
+  label347 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (1) <= GUARDED add_temp_5(1);
+  END BLOCK label347;
+  label348 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (2) <= GUARDED add_temp_5(2);
+  END BLOCK label348;
+  label349 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (3) <= GUARDED add_temp_5(3);
+  END BLOCK label349;
+  label350 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (4) <= GUARDED add_temp_5(4);
+  END BLOCK label350;
+  label351 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (5) <= GUARDED add_temp_5(5);
+  END BLOCK label351;
+  label352 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (6) <= GUARDED add_temp_5(6);
+  END BLOCK label352;
+  label353 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (7) <= GUARDED add_temp_5(7);
+  END BLOCK label353;
+  label354 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (8) <= GUARDED add_temp_5(8);
+  END BLOCK label354;
+  label355 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (9) <= GUARDED add_temp_5(9);
+  END BLOCK label355;
+  label356 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (10) <= GUARDED add_temp_5(10);
+  END BLOCK label356;
+  label357 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (11) <= GUARDED add_temp_5(11);
+  END BLOCK label357;
+  label358 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (12) <= GUARDED add_temp_5(12);
+  END BLOCK label358;
+  label359 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (13) <= GUARDED add_temp_5(13);
+  END BLOCK label359;
+  label360 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (14) <= GUARDED add_temp_5(14);
+  END BLOCK label360;
+  label361 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum6 (15) <= GUARDED add_temp_5(15);
+  END BLOCK label361;
+  label362 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (0) <= GUARDED (product6(0) XOR sum4(0));
+  END BLOCK label362;
+  label363 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (1) <= GUARDED (rtlcarry_130_1 XOR product6(1) XOR sum4(1));
+  END BLOCK label363;
+  label364 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (2) <= GUARDED (rtlcarry_130_2 XOR product6(2) XOR sum4(2));
+  END BLOCK label364;
+  label365 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (3) <= GUARDED (rtlcarry_130_3 XOR product6(3) XOR sum4(3));
+  END BLOCK label365;
+  label366 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (4) <= GUARDED (rtlcarry_130_4 XOR product6(4) XOR sum4(4));
+  END BLOCK label366;
+  label367 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (5) <= GUARDED (rtlcarry_130_5 XOR product6(5) XOR sum4(5));
+  END BLOCK label367;
+  label368 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (6) <= GUARDED (rtlcarry_130_6 XOR product6(6) XOR sum4(6));
+  END BLOCK label368;
+  label369 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (7) <= GUARDED (rtlcarry_130_7 XOR product6(7) XOR sum4(7));
+  END BLOCK label369;
+  label370 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (8) <= GUARDED (rtlcarry_130_8 XOR product6(8) XOR sum4(8));
+  END BLOCK label370;
+  label371 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (9) <= GUARDED (rtlcarry_130_9 XOR product6(9) XOR sum4(9));
+  END BLOCK label371;
+  label372 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (10) <= GUARDED (rtlcarry_130_10 XOR product6(10) XOR sum4(10));
+  END BLOCK label372;
+  label373 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (11) <= GUARDED (rtlcarry_130_11 XOR product6(11) XOR sum4(11));
+  END BLOCK label373;
+  label374 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (12) <= GUARDED (rtlcarry_130_12 XOR product6(12) XOR sum4(12));
+  END BLOCK label374;
+  label375 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (13) <= GUARDED (rtlcarry_130_13 XOR product6(12) XOR sum4(13));
+  END BLOCK label375;
+  label376 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (14) <= GUARDED (rtlcarry_130_14 XOR product6(12) XOR sum4(14));
+  END BLOCK label376;
+  label377 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (15) <= GUARDED (rtlcarry_130_15 XOR aux10);
+  END BLOCK label377;
+  label378 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_4 (16) <= GUARDED (((rtlcarry_130_15 AND (sum4(15) OR product6(12))
+) OR (sum4(15) AND product6(12))) XOR aux10);
+  END BLOCK label378;
+  label379 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (0) <= GUARDED add_temp_4(0);
+  END BLOCK label379;
+  label380 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (1) <= GUARDED add_temp_4(1);
+  END BLOCK label380;
+  label381 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (2) <= GUARDED add_temp_4(2);
+  END BLOCK label381;
+  label382 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (3) <= GUARDED add_temp_4(3);
+  END BLOCK label382;
+  label383 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (4) <= GUARDED add_temp_4(4);
+  END BLOCK label383;
+  label384 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (5) <= GUARDED add_temp_4(5);
+  END BLOCK label384;
+  label385 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (6) <= GUARDED add_temp_4(6);
+  END BLOCK label385;
+  label386 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (7) <= GUARDED add_temp_4(7);
+  END BLOCK label386;
+  label387 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (8) <= GUARDED add_temp_4(8);
+  END BLOCK label387;
+  label388 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (9) <= GUARDED add_temp_4(9);
+  END BLOCK label388;
+  label389 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (10) <= GUARDED add_temp_4(10);
+  END BLOCK label389;
+  label390 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (11) <= GUARDED add_temp_4(11);
+  END BLOCK label390;
+  label391 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (12) <= GUARDED add_temp_4(12);
+  END BLOCK label391;
+  label392 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (13) <= GUARDED add_temp_4(13);
+  END BLOCK label392;
+  label393 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (14) <= GUARDED add_temp_4(14);
+  END BLOCK label393;
+  label394 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum5 (15) <= GUARDED add_temp_4(15);
+  END BLOCK label394;
+  label395 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (0) <= GUARDED (product5(0) XOR sum3(0));
+  END BLOCK label395;
+  label396 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (1) <= GUARDED (rtlcarry_133_1 XOR product5(1) XOR sum3(1));
+  END BLOCK label396;
+  label397 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (2) <= GUARDED (rtlcarry_133_2 XOR product5(2) XOR sum3(2));
+  END BLOCK label397;
+  label398 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (3) <= GUARDED (rtlcarry_133_3 XOR product5(3) XOR sum3(3));
+  END BLOCK label398;
+  label399 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (4) <= GUARDED (rtlcarry_133_4 XOR product5(4) XOR sum3(4));
+  END BLOCK label399;
+  label400 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (5) <= GUARDED (rtlcarry_133_5 XOR product5(5) XOR sum3(5));
+  END BLOCK label400;
+  label401 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (6) <= GUARDED (rtlcarry_133_6 XOR product5(6) XOR sum3(6));
+  END BLOCK label401;
+  label402 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (7) <= GUARDED (rtlcarry_133_7 XOR product5(7) XOR sum3(7));
+  END BLOCK label402;
+  label403 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (8) <= GUARDED (rtlcarry_133_8 XOR product5(8) XOR sum3(8));
+  END BLOCK label403;
+  label404 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (9) <= GUARDED (rtlcarry_133_9 XOR product5(9) XOR sum3(9));
+  END BLOCK label404;
+  label405 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (10) <= GUARDED (rtlcarry_133_10 XOR product5(10) XOR sum3(10));
+  END BLOCK label405;
+  label406 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (11) <= GUARDED (rtlcarry_133_11 XOR product5(11) XOR sum3(11));
+  END BLOCK label406;
+  label407 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (12) <= GUARDED (rtlcarry_133_12 XOR product5(12) XOR sum3(12));
+  END BLOCK label407;
+  label408 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (13) <= GUARDED (rtlcarry_133_13 XOR product5(12) XOR sum3(13));
+  END BLOCK label408;
+  label409 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (14) <= GUARDED (rtlcarry_133_14 XOR product5(12) XOR sum3(14));
+  END BLOCK label409;
+  label410 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (15) <= GUARDED (rtlcarry_133_15 XOR aux11);
+  END BLOCK label410;
+  label411 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_3 (16) <= GUARDED (((rtlcarry_133_15 AND (sum3(15) OR product5(12))
+) OR (sum3(15) AND product5(12))) XOR aux11);
+  END BLOCK label411;
+  label412 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (0) <= GUARDED add_temp_3(0);
+  END BLOCK label412;
+  label413 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (1) <= GUARDED add_temp_3(1);
+  END BLOCK label413;
+  label414 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (2) <= GUARDED add_temp_3(2);
+  END BLOCK label414;
+  label415 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (3) <= GUARDED add_temp_3(3);
+  END BLOCK label415;
+  label416 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (4) <= GUARDED add_temp_3(4);
+  END BLOCK label416;
+  label417 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (5) <= GUARDED add_temp_3(5);
+  END BLOCK label417;
+  label418 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (6) <= GUARDED add_temp_3(6);
+  END BLOCK label418;
+  label419 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (7) <= GUARDED add_temp_3(7);
+  END BLOCK label419;
+  label420 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (8) <= GUARDED add_temp_3(8);
+  END BLOCK label420;
+  label421 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (9) <= GUARDED add_temp_3(9);
+  END BLOCK label421;
+  label422 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (10) <= GUARDED add_temp_3(10);
+  END BLOCK label422;
+  label423 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (11) <= GUARDED add_temp_3(11);
+  END BLOCK label423;
+  label424 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (12) <= GUARDED add_temp_3(12);
+  END BLOCK label424;
+  label425 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (13) <= GUARDED add_temp_3(13);
+  END BLOCK label425;
+  label426 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (14) <= GUARDED add_temp_3(14);
+  END BLOCK label426;
+  label427 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum4 (15) <= GUARDED add_temp_3(15);
+  END BLOCK label427;
+  label428 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (0) <= GUARDED (product4(0) XOR sum2(0));
+  END BLOCK label428;
+  label429 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (1) <= GUARDED (rtlcarry_136_1 XOR product4(1) XOR sum2(1));
+  END BLOCK label429;
+  label430 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (2) <= GUARDED (rtlcarry_136_2 XOR product4(2) XOR sum2(2));
+  END BLOCK label430;
+  label431 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (3) <= GUARDED (rtlcarry_136_3 XOR product4(3) XOR sum2(3));
+  END BLOCK label431;
+  label432 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (4) <= GUARDED (rtlcarry_136_4 XOR product4(4) XOR sum2(4));
+  END BLOCK label432;
+  label433 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (5) <= GUARDED (rtlcarry_136_5 XOR product4(5) XOR sum2(5));
+  END BLOCK label433;
+  label434 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (6) <= GUARDED (rtlcarry_136_6 XOR product4(6) XOR sum2(6));
+  END BLOCK label434;
+  label435 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (7) <= GUARDED (rtlcarry_136_7 XOR product4(7) XOR sum2(7));
+  END BLOCK label435;
+  label436 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (8) <= GUARDED (rtlcarry_136_8 XOR product4(8) XOR sum2(8));
+  END BLOCK label436;
+  label437 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (9) <= GUARDED (rtlcarry_136_9 XOR product4(9) XOR sum2(9));
+  END BLOCK label437;
+  label438 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (10) <= GUARDED (rtlcarry_136_10 XOR product4(10) XOR sum2(10));
+  END BLOCK label438;
+  label439 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (11) <= GUARDED (rtlcarry_136_11 XOR product4(11) XOR sum2(11));
+  END BLOCK label439;
+  label440 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (12) <= GUARDED (rtlcarry_136_12 XOR product4(12) XOR sum2(12));
+  END BLOCK label440;
+  label441 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (13) <= GUARDED (rtlcarry_136_13 XOR product4(12) XOR sum2(13));
+  END BLOCK label441;
+  label442 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (14) <= GUARDED (rtlcarry_136_14 XOR product4(12) XOR sum2(14));
+  END BLOCK label442;
+  label443 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (15) <= GUARDED (rtlcarry_136_15 XOR aux12);
+  END BLOCK label443;
+  label444 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_2 (16) <= GUARDED (((rtlcarry_136_15 AND (sum2(15) OR product4(12))
+) OR (sum2(15) AND product4(12))) XOR aux12);
+  END BLOCK label444;
+  label445 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (0) <= GUARDED add_temp_2(0);
+  END BLOCK label445;
+  label446 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (1) <= GUARDED add_temp_2(1);
+  END BLOCK label446;
+  label447 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (2) <= GUARDED add_temp_2(2);
+  END BLOCK label447;
+  label448 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (3) <= GUARDED add_temp_2(3);
+  END BLOCK label448;
+  label449 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (4) <= GUARDED add_temp_2(4);
+  END BLOCK label449;
+  label450 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (5) <= GUARDED add_temp_2(5);
+  END BLOCK label450;
+  label451 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (6) <= GUARDED add_temp_2(6);
+  END BLOCK label451;
+  label452 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (7) <= GUARDED add_temp_2(7);
+  END BLOCK label452;
+  label453 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (8) <= GUARDED add_temp_2(8);
+  END BLOCK label453;
+  label454 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (9) <= GUARDED add_temp_2(9);
+  END BLOCK label454;
+  label455 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (10) <= GUARDED add_temp_2(10);
+  END BLOCK label455;
+  label456 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (11) <= GUARDED add_temp_2(11);
+  END BLOCK label456;
+  label457 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (12) <= GUARDED add_temp_2(12);
+  END BLOCK label457;
+  label458 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (13) <= GUARDED add_temp_2(13);
+  END BLOCK label458;
+  label459 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (14) <= GUARDED add_temp_2(14);
+  END BLOCK label459;
+  label460 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum3 (15) <= GUARDED add_temp_2(15);
+  END BLOCK label460;
+  label461 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (0) <= GUARDED (product3(0) XOR sum1(0));
+  END BLOCK label461;
+  label462 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (1) <= GUARDED (rtlcarry_139_1 XOR product3(1) XOR sum1(1));
+  END BLOCK label462;
+  label463 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (2) <= GUARDED (rtlcarry_139_2 XOR product3(2) XOR sum1(2));
+  END BLOCK label463;
+  label464 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (3) <= GUARDED (rtlcarry_139_3 XOR product3(3) XOR sum1(3));
+  END BLOCK label464;
+  label465 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (4) <= GUARDED (rtlcarry_139_4 XOR product3(4) XOR sum1(4));
+  END BLOCK label465;
+  label466 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (5) <= GUARDED (rtlcarry_139_5 XOR product3(5) XOR sum1(5));
+  END BLOCK label466;
+  label467 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (6) <= GUARDED (rtlcarry_139_6 XOR product3(6) XOR sum1(6));
+  END BLOCK label467;
+  label468 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (7) <= GUARDED (rtlcarry_139_7 XOR product3(7) XOR sum1(7));
+  END BLOCK label468;
+  label469 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (8) <= GUARDED (rtlcarry_139_8 XOR product3(8) XOR sum1(8));
+  END BLOCK label469;
+  label470 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (9) <= GUARDED (rtlcarry_139_9 XOR product3(9) XOR sum1(9));
+  END BLOCK label470;
+  label471 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (10) <= GUARDED (rtlcarry_139_10 XOR product3(10) XOR sum1(10));
+  END BLOCK label471;
+  label472 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (11) <= GUARDED (rtlcarry_139_11 XOR product3(11) XOR sum1(11));
+  END BLOCK label472;
+  label473 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (12) <= GUARDED (rtlcarry_139_12 XOR product3(12) XOR sum1(12));
+  END BLOCK label473;
+  label474 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (13) <= GUARDED (rtlcarry_139_13 XOR product3(12) XOR sum1(13));
+  END BLOCK label474;
+  label475 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (14) <= GUARDED (rtlcarry_139_14 XOR product3(12) XOR sum1(14));
+  END BLOCK label475;
+  label476 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (15) <= GUARDED (rtlcarry_139_15 XOR aux13);
+  END BLOCK label476;
+  label477 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp_1 (16) <= GUARDED (((rtlcarry_139_15 AND (sum1(15) OR product3(12))
+) OR (sum1(15) AND product3(12))) XOR aux13);
+  END BLOCK label477;
+  label478 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (0) <= GUARDED add_temp_1(0);
+  END BLOCK label478;
+  label479 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (1) <= GUARDED add_temp_1(1);
+  END BLOCK label479;
+  label480 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (2) <= GUARDED add_temp_1(2);
+  END BLOCK label480;
+  label481 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (3) <= GUARDED add_temp_1(3);
+  END BLOCK label481;
+  label482 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (4) <= GUARDED add_temp_1(4);
+  END BLOCK label482;
+  label483 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (5) <= GUARDED add_temp_1(5);
+  END BLOCK label483;
+  label484 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (6) <= GUARDED add_temp_1(6);
+  END BLOCK label484;
+  label485 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (7) <= GUARDED add_temp_1(7);
+  END BLOCK label485;
+  label486 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (8) <= GUARDED add_temp_1(8);
+  END BLOCK label486;
+  label487 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (9) <= GUARDED add_temp_1(9);
+  END BLOCK label487;
+  label488 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (10) <= GUARDED add_temp_1(10);
+  END BLOCK label488;
+  label489 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (11) <= GUARDED add_temp_1(11);
+  END BLOCK label489;
+  label490 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (12) <= GUARDED add_temp_1(12);
+  END BLOCK label490;
+  label491 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (13) <= GUARDED add_temp_1(13);
+  END BLOCK label491;
+  label492 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (14) <= GUARDED add_temp_1(14);
+  END BLOCK label492;
+  label493 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum2 (15) <= GUARDED add_temp_1(15);
+  END BLOCK label493;
+  label494 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (0) <= GUARDED (product2(0) XOR product1_cast(0));
+  END BLOCK label494;
+  label495 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (1) <= GUARDED (rtlcarry_142_1 XOR product2(1) XOR 
+product1_cast(1));
+  END BLOCK label495;
+  label496 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (2) <= GUARDED (rtlcarry_142_2 XOR product2(2) XOR 
+product1_cast(2));
+  END BLOCK label496;
+  label497 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (3) <= GUARDED (rtlcarry_142_3 XOR product2(3) XOR 
+product1_cast(3));
+  END BLOCK label497;
+  label498 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (4) <= GUARDED (rtlcarry_142_4 XOR product2(4) XOR 
+product1_cast(4));
+  END BLOCK label498;
+  label499 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (5) <= GUARDED (rtlcarry_142_5 XOR product2(5) XOR 
+product1_cast(5));
+  END BLOCK label499;
+  label500 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (6) <= GUARDED (rtlcarry_142_6 XOR product2(6) XOR 
+product1_cast(6));
+  END BLOCK label500;
+  label501 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (7) <= GUARDED (rtlcarry_142_7 XOR product2(7) XOR 
+product1_cast(7));
+  END BLOCK label501;
+  label502 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (8) <= GUARDED (rtlcarry_142_8 XOR product2(8) XOR 
+product1_cast(8));
+  END BLOCK label502;
+  label503 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (9) <= GUARDED (rtlcarry_142_9 XOR product2(9) XOR 
+product1_cast(9));
+  END BLOCK label503;
+  label504 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (10) <= GUARDED (rtlcarry_142_10 XOR product2(10) XOR 
+product1_cast(10));
+  END BLOCK label504;
+  label505 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (11) <= GUARDED (rtlcarry_142_11 XOR product2(11) XOR 
+product1_cast(11));
+  END BLOCK label505;
+  label506 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (12) <= GUARDED (rtlcarry_142_12 XOR product2(12) XOR 
+product1_cast(12));
+  END BLOCK label506;
+  label507 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (13) <= GUARDED (rtlcarry_142_13 XOR product2(12) XOR 
+product1_cast(13));
+  END BLOCK label507;
+  label508 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (14) <= GUARDED (rtlcarry_142_14 XOR product2(12) XOR 
+product1_cast(14));
+  END BLOCK label508;
+  label509 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (15) <= GUARDED (rtlcarry_142_15 XOR aux14);
+  END BLOCK label509;
+  label510 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    add_temp (16) <= GUARDED (((rtlcarry_142_15 AND (product1_cast(15) OR 
+product2(12))) OR (product1_cast(15) AND product2(12))) XOR 
+aux14);
+  END BLOCK label510;
+  label511 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (0) <= GUARDED add_temp(0);
+  END BLOCK label511;
+  label512 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (1) <= GUARDED add_temp(1);
+  END BLOCK label512;
+  label513 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (2) <= GUARDED add_temp(2);
+  END BLOCK label513;
+  label514 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (3) <= GUARDED add_temp(3);
+  END BLOCK label514;
+  label515 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (4) <= GUARDED add_temp(4);
+  END BLOCK label515;
+  label516 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (5) <= GUARDED add_temp(5);
+  END BLOCK label516;
+  label517 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (6) <= GUARDED add_temp(6);
+  END BLOCK label517;
+  label518 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (7) <= GUARDED add_temp(7);
+  END BLOCK label518;
+  label519 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (8) <= GUARDED add_temp(8);
+  END BLOCK label519;
+  label520 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (9) <= GUARDED add_temp(9);
+  END BLOCK label520;
+  label521 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (10) <= GUARDED add_temp(10);
+  END BLOCK label521;
+  label522 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (11) <= GUARDED add_temp(11);
+  END BLOCK label522;
+  label523 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (12) <= GUARDED add_temp(12);
+  END BLOCK label523;
+  label524 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (13) <= GUARDED add_temp(13);
+  END BLOCK label524;
+  label525 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (14) <= GUARDED add_temp(14);
+  END BLOCK label525;
+  label526 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    sum1 (15) <= GUARDED add_temp(15);
+  END BLOCK label526;
+  label527 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (0) <= GUARDED '0';
+  END BLOCK label527;
+  label528 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (1) <= GUARDED '0';
+  END BLOCK label528;
+  label529 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (2) <= GUARDED aux15;
+  END BLOCK label529;
+  label530 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (3) <= GUARDED (rtlcarry_145_3 XOR rtlcarry_95_3 XOR 
+rtlcarry_90_3);
+  END BLOCK label530;
+  label531 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (4) <= GUARDED rtlcarry_145_4;
+  END BLOCK label531;
+  label532 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (5) <= GUARDED rtlcarry_145_5;
+  END BLOCK label532;
+  label533 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (6) <= GUARDED rtlcarry_145_6;
+  END BLOCK label533;
+  label534 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (7) <= GUARDED rtlcarry_145_7;
+  END BLOCK label534;
+  label535 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (8) <= GUARDED rtlcarry_145_8;
+  END BLOCK label535;
+  label536 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (9) <= GUARDED rtlcarry_145_9;
+  END BLOCK label536;
+  label537 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (10) <= GUARDED (rtlcarry_145_10 XOR aux16);
+  END BLOCK label537;
+  label538 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (11) <= GUARDED (rtlcarry_145_11 XOR aux17);
+  END BLOCK label538;
+  label539 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (12) <= GUARDED ((rtlcarry_145_11 AND aux17) OR (rtlcarry_95_11 
+AND rtlcarry_90_11));
+  END BLOCK label539;
+  label540 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (13) <= GUARDED '0';
+  END BLOCK label540;
+  label541 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (14) <= GUARDED '0';
+  END BLOCK label541;
+  label542 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_9 (15) <= GUARDED '0';
+  END BLOCK label542;
+  label543 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (0) <= GUARDED mul_temp_9(0);
+  END BLOCK label543;
+  label544 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (1) <= GUARDED mul_temp_9(1);
+  END BLOCK label544;
+  label545 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (2) <= GUARDED mul_temp_9(2);
+  END BLOCK label545;
+  label546 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (3) <= GUARDED mul_temp_9(3);
+  END BLOCK label546;
+  label547 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (4) <= GUARDED mul_temp_9(4);
+  END BLOCK label547;
+  label548 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (5) <= GUARDED mul_temp_9(5);
+  END BLOCK label548;
+  label549 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (6) <= GUARDED mul_temp_9(6);
+  END BLOCK label549;
+  label550 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (7) <= GUARDED mul_temp_9(7);
+  END BLOCK label550;
+  label551 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (8) <= GUARDED mul_temp_9(8);
+  END BLOCK label551;
+  label552 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (9) <= GUARDED mul_temp_9(9);
+  END BLOCK label552;
+  label553 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (10) <= GUARDED mul_temp_9(10);
+  END BLOCK label553;
+  label554 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (11) <= GUARDED mul_temp_9(11);
+  END BLOCK label554;
+  label555 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1 (12) <= GUARDED mul_temp_9(12);
+  END BLOCK label555;
+  label556 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (0) <= GUARDED product1(0);
+  END BLOCK label556;
+  label557 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (1) <= GUARDED product1(1);
+  END BLOCK label557;
+  label558 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (2) <= GUARDED product1(2);
+  END BLOCK label558;
+  label559 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (3) <= GUARDED product1(3);
+  END BLOCK label559;
+  label560 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (4) <= GUARDED product1(4);
+  END BLOCK label560;
+  label561 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (5) <= GUARDED product1(5);
+  END BLOCK label561;
+  label562 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (6) <= GUARDED product1(6);
+  END BLOCK label562;
+  label563 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (7) <= GUARDED product1(7);
+  END BLOCK label563;
+  label564 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (8) <= GUARDED product1(8);
+  END BLOCK label564;
+  label565 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (9) <= GUARDED product1(9);
+  END BLOCK label565;
+  label566 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (10) <= GUARDED product1(10);
+  END BLOCK label566;
+  label567 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (11) <= GUARDED product1(11);
+  END BLOCK label567;
+  label568 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (12) <= GUARDED product1(12);
+  END BLOCK label568;
+  label569 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (13) <= GUARDED product1(12);
+  END BLOCK label569;
+  label570 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (14) <= GUARDED product1(12);
+  END BLOCK label570;
+  label571 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product1_cast (15) <= GUARDED product1(12);
+  END BLOCK label571;
+  label572 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (0) <= GUARDED '0';
+  END BLOCK label572;
+  label573 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (1) <= GUARDED '0';
+  END BLOCK label573;
+  label574 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (2) <= GUARDED aux18;
+  END BLOCK label574;
+  label575 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (3) <= GUARDED (rtlcarry_146_3 XOR rtlcarry_85_3 XOR 
+rtlcarry_80_3);
+  END BLOCK label575;
+  label576 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (4) <= GUARDED rtlcarry_146_4;
+  END BLOCK label576;
+  label577 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (5) <= GUARDED rtlcarry_146_5;
+  END BLOCK label577;
+  label578 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (6) <= GUARDED rtlcarry_146_6;
+  END BLOCK label578;
+  label579 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (7) <= GUARDED rtlcarry_146_7;
+  END BLOCK label579;
+  label580 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (8) <= GUARDED rtlcarry_146_8;
+  END BLOCK label580;
+  label581 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (9) <= GUARDED rtlcarry_146_9;
+  END BLOCK label581;
+  label582 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (10) <= GUARDED (rtlcarry_146_10 XOR aux19);
+  END BLOCK label582;
+  label583 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (11) <= GUARDED (rtlcarry_146_11 XOR aux20);
+  END BLOCK label583;
+  label584 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (12) <= GUARDED ((rtlcarry_146_11 AND aux20) OR (rtlcarry_85_11 
+AND rtlcarry_80_11));
+  END BLOCK label584;
+  label585 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (13) <= GUARDED '0';
+  END BLOCK label585;
+  label586 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (14) <= GUARDED '0';
+  END BLOCK label586;
+  label587 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_8 (15) <= GUARDED '0';
+  END BLOCK label587;
+  label588 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (0) <= GUARDED mul_temp_8(0);
+  END BLOCK label588;
+  label589 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (1) <= GUARDED mul_temp_8(1);
+  END BLOCK label589;
+  label590 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (2) <= GUARDED mul_temp_8(2);
+  END BLOCK label590;
+  label591 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (3) <= GUARDED mul_temp_8(3);
+  END BLOCK label591;
+  label592 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (4) <= GUARDED mul_temp_8(4);
+  END BLOCK label592;
+  label593 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (5) <= GUARDED mul_temp_8(5);
+  END BLOCK label593;
+  label594 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (6) <= GUARDED mul_temp_8(6);
+  END BLOCK label594;
+  label595 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (7) <= GUARDED mul_temp_8(7);
+  END BLOCK label595;
+  label596 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (8) <= GUARDED mul_temp_8(8);
+  END BLOCK label596;
+  label597 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (9) <= GUARDED mul_temp_8(9);
+  END BLOCK label597;
+  label598 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (10) <= GUARDED mul_temp_8(10);
+  END BLOCK label598;
+  label599 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (11) <= GUARDED mul_temp_8(11);
+  END BLOCK label599;
+  label600 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product2 (12) <= GUARDED mul_temp_8(12);
+  END BLOCK label600;
+  label601 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (0) <= GUARDED '0';
+  END BLOCK label601;
+  label602 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (1) <= GUARDED '0';
+  END BLOCK label602;
+  label603 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (2) <= GUARDED '0';
+  END BLOCK label603;
+  label604 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (3) <= GUARDED '0';
+  END BLOCK label604;
+  label605 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (4) <= GUARDED '0';
+  END BLOCK label605;
+  label606 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (5) <= GUARDED '0';
+  END BLOCK label606;
+  label607 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (6) <= GUARDED '0';
+  END BLOCK label607;
+  label608 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (7) <= GUARDED '0';
+  END BLOCK label608;
+  label609 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (8) <= GUARDED '0';
+  END BLOCK label609;
+  label610 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (9) <= GUARDED '0';
+  END BLOCK label610;
+  label611 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (10) <= GUARDED '0';
+  END BLOCK label611;
+  label612 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (11) <= GUARDED '0';
+  END BLOCK label612;
+  label613 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product3 (12) <= GUARDED '0';
+  END BLOCK label613;
+  label614 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (0) <= GUARDED '0';
+  END BLOCK label614;
+  label615 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (1) <= GUARDED '0';
+  END BLOCK label615;
+  label616 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (2) <= GUARDED '0';
+  END BLOCK label616;
+  label617 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (3) <= GUARDED '0';
+  END BLOCK label617;
+  label618 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (4) <= GUARDED '0';
+  END BLOCK label618;
+  label619 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (5) <= GUARDED '0';
+  END BLOCK label619;
+  label620 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (6) <= GUARDED '0';
+  END BLOCK label620;
+  label621 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (7) <= GUARDED '0';
+  END BLOCK label621;
+  label622 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (8) <= GUARDED '0';
+  END BLOCK label622;
+  label623 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (9) <= GUARDED '0';
+  END BLOCK label623;
+  label624 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (10) <= GUARDED '0';
+  END BLOCK label624;
+  label625 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (11) <= GUARDED '0';
+  END BLOCK label625;
+  label626 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product4 (12) <= GUARDED '0';
+  END BLOCK label626;
+  label627 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (0) <= GUARDED '0';
+  END BLOCK label627;
+  label628 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (1) <= GUARDED '0';
+  END BLOCK label628;
+  label629 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (2) <= GUARDED '0';
+  END BLOCK label629;
+  label630 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (3) <= GUARDED '0';
+  END BLOCK label630;
+  label631 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (4) <= GUARDED '0';
+  END BLOCK label631;
+  label632 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (5) <= GUARDED '0';
+  END BLOCK label632;
+  label633 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (6) <= GUARDED '0';
+  END BLOCK label633;
+  label634 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (7) <= GUARDED '0';
+  END BLOCK label634;
+  label635 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (8) <= GUARDED '0';
+  END BLOCK label635;
+  label636 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (9) <= GUARDED '0';
+  END BLOCK label636;
+  label637 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (10) <= GUARDED '0';
+  END BLOCK label637;
+  label638 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (11) <= GUARDED '0';
+  END BLOCK label638;
+  label639 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product5 (12) <= GUARDED '0';
+  END BLOCK label639;
+  label640 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (0) <= GUARDED '0';
+  END BLOCK label640;
+  label641 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (1) <= GUARDED '0';
+  END BLOCK label641;
+  label642 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (2) <= GUARDED aux21;
+  END BLOCK label642;
+  label643 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (3) <= GUARDED (rtlcarry_147_3 XOR rtlcarry_75_3 XOR 
+rtlcarry_70_3);
+  END BLOCK label643;
+  label644 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (4) <= GUARDED rtlcarry_147_4;
+  END BLOCK label644;
+  label645 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (5) <= GUARDED rtlcarry_147_5;
+  END BLOCK label645;
+  label646 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (6) <= GUARDED rtlcarry_147_6;
+  END BLOCK label646;
+  label647 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (7) <= GUARDED rtlcarry_147_7;
+  END BLOCK label647;
+  label648 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (8) <= GUARDED rtlcarry_147_8;
+  END BLOCK label648;
+  label649 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (9) <= GUARDED rtlcarry_147_9;
+  END BLOCK label649;
+  label650 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (10) <= GUARDED (rtlcarry_147_10 XOR aux22);
+  END BLOCK label650;
+  label651 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (11) <= GUARDED (rtlcarry_147_11 XOR aux23);
+  END BLOCK label651;
+  label652 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (12) <= GUARDED ((rtlcarry_147_11 AND aux23) OR (rtlcarry_75_11 
+AND rtlcarry_70_11));
+  END BLOCK label652;
+  label653 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (13) <= GUARDED '0';
+  END BLOCK label653;
+  label654 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (14) <= GUARDED '0';
+  END BLOCK label654;
+  label655 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_7 (15) <= GUARDED '0';
+  END BLOCK label655;
+  label656 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (0) <= GUARDED mul_temp_7(0);
+  END BLOCK label656;
+  label657 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (1) <= GUARDED mul_temp_7(1);
+  END BLOCK label657;
+  label658 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (2) <= GUARDED mul_temp_7(2);
+  END BLOCK label658;
+  label659 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (3) <= GUARDED mul_temp_7(3);
+  END BLOCK label659;
+  label660 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (4) <= GUARDED mul_temp_7(4);
+  END BLOCK label660;
+  label661 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (5) <= GUARDED mul_temp_7(5);
+  END BLOCK label661;
+  label662 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (6) <= GUARDED mul_temp_7(6);
+  END BLOCK label662;
+  label663 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (7) <= GUARDED mul_temp_7(7);
+  END BLOCK label663;
+  label664 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (8) <= GUARDED mul_temp_7(8);
+  END BLOCK label664;
+  label665 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (9) <= GUARDED mul_temp_7(9);
+  END BLOCK label665;
+  label666 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (10) <= GUARDED mul_temp_7(10);
+  END BLOCK label666;
+  label667 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (11) <= GUARDED mul_temp_7(11);
+  END BLOCK label667;
+  label668 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product6 (12) <= GUARDED mul_temp_7(12);
+  END BLOCK label668;
+  label669 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (0) <= GUARDED '0';
+  END BLOCK label669;
+  label670 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (1) <= GUARDED '0';
+  END BLOCK label670;
+  label671 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (2) <= GUARDED aux24;
+  END BLOCK label671;
+  label672 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (3) <= GUARDED (rtlcarry_148_3 XOR rtlcarry_60_3 XOR 
+rtlcarry_65_3);
+  END BLOCK label672;
+  label673 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (4) <= GUARDED rtlcarry_148_4;
+  END BLOCK label673;
+  label674 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (5) <= GUARDED rtlcarry_148_5;
+  END BLOCK label674;
+  label675 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (6) <= GUARDED rtlcarry_148_6;
+  END BLOCK label675;
+  label676 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (7) <= GUARDED rtlcarry_148_7;
+  END BLOCK label676;
+  label677 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (8) <= GUARDED rtlcarry_148_8;
+  END BLOCK label677;
+  label678 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (9) <= GUARDED rtlcarry_148_9;
+  END BLOCK label678;
+  label679 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (10) <= GUARDED (rtlcarry_148_10 XOR aux25);
+  END BLOCK label679;
+  label680 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (11) <= GUARDED (rtlcarry_148_11 XOR aux26);
+  END BLOCK label680;
+  label681 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (12) <= GUARDED ((rtlcarry_148_11 AND aux26) OR (rtlcarry_65_11 
+AND rtlcarry_60_11));
+  END BLOCK label681;
+  label682 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (13) <= GUARDED '0';
+  END BLOCK label682;
+  label683 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (14) <= GUARDED '0';
+  END BLOCK label683;
+  label684 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_6 (15) <= GUARDED '0';
+  END BLOCK label684;
+  label685 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (0) <= GUARDED mul_temp_6(0);
+  END BLOCK label685;
+  label686 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (1) <= GUARDED mul_temp_6(1);
+  END BLOCK label686;
+  label687 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (2) <= GUARDED mul_temp_6(2);
+  END BLOCK label687;
+  label688 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (3) <= GUARDED mul_temp_6(3);
+  END BLOCK label688;
+  label689 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (4) <= GUARDED mul_temp_6(4);
+  END BLOCK label689;
+  label690 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (5) <= GUARDED mul_temp_6(5);
+  END BLOCK label690;
+  label691 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (6) <= GUARDED mul_temp_6(6);
+  END BLOCK label691;
+  label692 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (7) <= GUARDED mul_temp_6(7);
+  END BLOCK label692;
+  label693 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (8) <= GUARDED mul_temp_6(8);
+  END BLOCK label693;
+  label694 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (9) <= GUARDED mul_temp_6(9);
+  END BLOCK label694;
+  label695 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (10) <= GUARDED mul_temp_6(10);
+  END BLOCK label695;
+  label696 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (11) <= GUARDED mul_temp_6(11);
+  END BLOCK label696;
+  label697 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product7 (12) <= GUARDED mul_temp_6(12);
+  END BLOCK label697;
+  label698 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (0) <= GUARDED '0';
+  END BLOCK label698;
+  label699 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (1) <= GUARDED '0';
+  END BLOCK label699;
+  label700 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (2) <= GUARDED aux27;
+  END BLOCK label700;
+  label701 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (3) <= GUARDED (rtlcarry_149_3 XOR rtlcarry_55_3 XOR 
+rtlcarry_50_3);
+  END BLOCK label701;
+  label702 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (4) <= GUARDED rtlcarry_149_4;
+  END BLOCK label702;
+  label703 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (5) <= GUARDED rtlcarry_149_5;
+  END BLOCK label703;
+  label704 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (6) <= GUARDED rtlcarry_149_6;
+  END BLOCK label704;
+  label705 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (7) <= GUARDED rtlcarry_149_7;
+  END BLOCK label705;
+  label706 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (8) <= GUARDED rtlcarry_149_8;
+  END BLOCK label706;
+  label707 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (9) <= GUARDED rtlcarry_149_9;
+  END BLOCK label707;
+  label708 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (10) <= GUARDED (rtlcarry_149_10 XOR aux28);
+  END BLOCK label708;
+  label709 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (11) <= GUARDED (rtlcarry_149_11 XOR aux29);
+  END BLOCK label709;
+  label710 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (12) <= GUARDED ((rtlcarry_149_11 AND aux29) OR (rtlcarry_55_11 
+AND rtlcarry_50_11));
+  END BLOCK label710;
+  label711 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (13) <= GUARDED '0';
+  END BLOCK label711;
+  label712 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (14) <= GUARDED '0';
+  END BLOCK label712;
+  label713 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_5 (15) <= GUARDED '0';
+  END BLOCK label713;
+  label714 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (0) <= GUARDED mul_temp_5(0);
+  END BLOCK label714;
+  label715 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (1) <= GUARDED mul_temp_5(1);
+  END BLOCK label715;
+  label716 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (2) <= GUARDED mul_temp_5(2);
+  END BLOCK label716;
+  label717 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (3) <= GUARDED mul_temp_5(3);
+  END BLOCK label717;
+  label718 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (4) <= GUARDED mul_temp_5(4);
+  END BLOCK label718;
+  label719 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (5) <= GUARDED mul_temp_5(5);
+  END BLOCK label719;
+  label720 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (6) <= GUARDED mul_temp_5(6);
+  END BLOCK label720;
+  label721 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (7) <= GUARDED mul_temp_5(7);
+  END BLOCK label721;
+  label722 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (8) <= GUARDED mul_temp_5(8);
+  END BLOCK label722;
+  label723 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (9) <= GUARDED mul_temp_5(9);
+  END BLOCK label723;
+  label724 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (10) <= GUARDED mul_temp_5(10);
+  END BLOCK label724;
+  label725 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (11) <= GUARDED mul_temp_5(11);
+  END BLOCK label725;
+  label726 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product8 (12) <= GUARDED mul_temp_5(12);
+  END BLOCK label726;
+  label727 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (0) <= GUARDED '0';
+  END BLOCK label727;
+  label728 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (1) <= GUARDED '0';
+  END BLOCK label728;
+  label729 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (2) <= GUARDED aux30;
+  END BLOCK label729;
+  label730 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (3) <= GUARDED (rtlcarry_150_3 XOR rtlcarry_45_3 XOR 
+rtlcarry_40_3);
+  END BLOCK label730;
+  label731 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (4) <= GUARDED rtlcarry_150_4;
+  END BLOCK label731;
+  label732 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (5) <= GUARDED rtlcarry_150_5;
+  END BLOCK label732;
+  label733 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (6) <= GUARDED rtlcarry_150_6;
+  END BLOCK label733;
+  label734 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (7) <= GUARDED rtlcarry_150_7;
+  END BLOCK label734;
+  label735 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (8) <= GUARDED rtlcarry_150_8;
+  END BLOCK label735;
+  label736 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (9) <= GUARDED rtlcarry_150_9;
+  END BLOCK label736;
+  label737 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (10) <= GUARDED (rtlcarry_150_10 XOR aux31);
+  END BLOCK label737;
+  label738 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (11) <= GUARDED (rtlcarry_150_11 XOR aux32);
+  END BLOCK label738;
+  label739 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (12) <= GUARDED ((rtlcarry_150_11 AND aux32) OR (rtlcarry_45_11 
+AND rtlcarry_40_11));
+  END BLOCK label739;
+  label740 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (13) <= GUARDED '0';
+  END BLOCK label740;
+  label741 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (14) <= GUARDED '0';
+  END BLOCK label741;
+  label742 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_4 (15) <= GUARDED '0';
+  END BLOCK label742;
+  label743 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (0) <= GUARDED mul_temp_4(0);
+  END BLOCK label743;
+  label744 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (1) <= GUARDED mul_temp_4(1);
+  END BLOCK label744;
+  label745 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (2) <= GUARDED mul_temp_4(2);
+  END BLOCK label745;
+  label746 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (3) <= GUARDED mul_temp_4(3);
+  END BLOCK label746;
+  label747 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (4) <= GUARDED mul_temp_4(4);
+  END BLOCK label747;
+  label748 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (5) <= GUARDED mul_temp_4(5);
+  END BLOCK label748;
+  label749 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (6) <= GUARDED mul_temp_4(6);
+  END BLOCK label749;
+  label750 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (7) <= GUARDED mul_temp_4(7);
+  END BLOCK label750;
+  label751 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (8) <= GUARDED mul_temp_4(8);
+  END BLOCK label751;
+  label752 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (9) <= GUARDED mul_temp_4(9);
+  END BLOCK label752;
+  label753 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (10) <= GUARDED mul_temp_4(10);
+  END BLOCK label753;
+  label754 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (11) <= GUARDED mul_temp_4(11);
+  END BLOCK label754;
+  label755 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product9 (12) <= GUARDED mul_temp_4(12);
+  END BLOCK label755;
+  label756 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (0) <= GUARDED '0';
+  END BLOCK label756;
+  label757 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (1) <= GUARDED '0';
+  END BLOCK label757;
+  label758 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (2) <= GUARDED aux33;
+  END BLOCK label758;
+  label759 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (3) <= GUARDED (rtlcarry_151_3 XOR rtlcarry_30_3 XOR 
+rtlcarry_35_3);
+  END BLOCK label759;
+  label760 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (4) <= GUARDED rtlcarry_151_4;
+  END BLOCK label760;
+  label761 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (5) <= GUARDED rtlcarry_151_5;
+  END BLOCK label761;
+  label762 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (6) <= GUARDED rtlcarry_151_6;
+  END BLOCK label762;
+  label763 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (7) <= GUARDED rtlcarry_151_7;
+  END BLOCK label763;
+  label764 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (8) <= GUARDED rtlcarry_151_8;
+  END BLOCK label764;
+  label765 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (9) <= GUARDED rtlcarry_151_9;
+  END BLOCK label765;
+  label766 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (10) <= GUARDED (rtlcarry_151_10 XOR aux34);
+  END BLOCK label766;
+  label767 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (11) <= GUARDED (rtlcarry_151_11 XOR aux35);
+  END BLOCK label767;
+  label768 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (12) <= GUARDED ((rtlcarry_151_11 AND aux35) OR (rtlcarry_30_11 
+AND rtlcarry_35_11));
+  END BLOCK label768;
+  label769 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (13) <= GUARDED '0';
+  END BLOCK label769;
+  label770 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (14) <= GUARDED '0';
+  END BLOCK label770;
+  label771 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_3 (15) <= GUARDED '0';
+  END BLOCK label771;
+  label772 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (0) <= GUARDED mul_temp_3(0);
+  END BLOCK label772;
+  label773 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (1) <= GUARDED mul_temp_3(1);
+  END BLOCK label773;
+  label774 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (2) <= GUARDED mul_temp_3(2);
+  END BLOCK label774;
+  label775 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (3) <= GUARDED mul_temp_3(3);
+  END BLOCK label775;
+  label776 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (4) <= GUARDED mul_temp_3(4);
+  END BLOCK label776;
+  label777 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (5) <= GUARDED mul_temp_3(5);
+  END BLOCK label777;
+  label778 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (6) <= GUARDED mul_temp_3(6);
+  END BLOCK label778;
+  label779 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (7) <= GUARDED mul_temp_3(7);
+  END BLOCK label779;
+  label780 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (8) <= GUARDED mul_temp_3(8);
+  END BLOCK label780;
+  label781 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (9) <= GUARDED mul_temp_3(9);
+  END BLOCK label781;
+  label782 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (10) <= GUARDED mul_temp_3(10);
+  END BLOCK label782;
+  label783 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (11) <= GUARDED mul_temp_3(11);
+  END BLOCK label783;
+  label784 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product10 (12) <= GUARDED mul_temp_3(12);
+  END BLOCK label784;
+  label785 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (0) <= GUARDED '0';
+  END BLOCK label785;
+  label786 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (1) <= GUARDED '0';
+  END BLOCK label786;
+  label787 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (2) <= GUARDED aux36;
+  END BLOCK label787;
+  label788 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (3) <= GUARDED (rtlcarry_152_3 XOR rtlcarry_25_3 XOR 
+rtlcarry_20_3);
+  END BLOCK label788;
+  label789 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (4) <= GUARDED rtlcarry_152_4;
+  END BLOCK label789;
+  label790 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (5) <= GUARDED rtlcarry_152_5;
+  END BLOCK label790;
+  label791 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (6) <= GUARDED rtlcarry_152_6;
+  END BLOCK label791;
+  label792 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (7) <= GUARDED rtlcarry_152_7;
+  END BLOCK label792;
+  label793 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (8) <= GUARDED rtlcarry_152_8;
+  END BLOCK label793;
+  label794 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (9) <= GUARDED rtlcarry_152_9;
+  END BLOCK label794;
+  label795 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (10) <= GUARDED (rtlcarry_152_10 XOR aux37);
+  END BLOCK label795;
+  label796 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (11) <= GUARDED (rtlcarry_152_11 XOR aux38);
+  END BLOCK label796;
+  label797 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (12) <= GUARDED ((rtlcarry_152_11 AND aux38) OR (rtlcarry_25_11 
+AND rtlcarry_20_11));
+  END BLOCK label797;
+  label798 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (13) <= GUARDED '0';
+  END BLOCK label798;
+  label799 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (14) <= GUARDED '0';
+  END BLOCK label799;
+  label800 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_2 (15) <= GUARDED '0';
+  END BLOCK label800;
+  label801 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (0) <= GUARDED mul_temp_2(0);
+  END BLOCK label801;
+  label802 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (1) <= GUARDED mul_temp_2(1);
+  END BLOCK label802;
+  label803 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (2) <= GUARDED mul_temp_2(2);
+  END BLOCK label803;
+  label804 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (3) <= GUARDED mul_temp_2(3);
+  END BLOCK label804;
+  label805 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (4) <= GUARDED mul_temp_2(4);
+  END BLOCK label805;
+  label806 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (5) <= GUARDED mul_temp_2(5);
+  END BLOCK label806;
+  label807 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (6) <= GUARDED mul_temp_2(6);
+  END BLOCK label807;
+  label808 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (7) <= GUARDED mul_temp_2(7);
+  END BLOCK label808;
+  label809 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (8) <= GUARDED mul_temp_2(8);
+  END BLOCK label809;
+  label810 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (9) <= GUARDED mul_temp_2(9);
+  END BLOCK label810;
+  label811 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (10) <= GUARDED mul_temp_2(10);
+  END BLOCK label811;
+  label812 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (11) <= GUARDED mul_temp_2(11);
+  END BLOCK label812;
+  label813 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product11 (12) <= GUARDED mul_temp_2(12);
+  END BLOCK label813;
+  label814 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (0) <= GUARDED '0';
+  END BLOCK label814;
+  label815 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (1) <= GUARDED '0';
+  END BLOCK label815;
+  label816 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (2) <= GUARDED '0';
+  END BLOCK label816;
+  label817 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (3) <= GUARDED '0';
+  END BLOCK label817;
+  label818 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (4) <= GUARDED '0';
+  END BLOCK label818;
+  label819 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (5) <= GUARDED '0';
+  END BLOCK label819;
+  label820 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (6) <= GUARDED '0';
+  END BLOCK label820;
+  label821 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (7) <= GUARDED '0';
+  END BLOCK label821;
+  label822 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (8) <= GUARDED '0';
+  END BLOCK label822;
+  label823 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (9) <= GUARDED '0';
+  END BLOCK label823;
+  label824 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (10) <= GUARDED '0';
+  END BLOCK label824;
+  label825 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (11) <= GUARDED '0';
+  END BLOCK label825;
+  label826 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product12 (12) <= GUARDED '0';
+  END BLOCK label826;
+  label827 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (0) <= GUARDED '0';
+  END BLOCK label827;
+  label828 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (1) <= GUARDED '0';
+  END BLOCK label828;
+  label829 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (2) <= GUARDED '0';
+  END BLOCK label829;
+  label830 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (3) <= GUARDED '0';
+  END BLOCK label830;
+  label831 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (4) <= GUARDED '0';
+  END BLOCK label831;
+  label832 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (5) <= GUARDED '0';
+  END BLOCK label832;
+  label833 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (6) <= GUARDED '0';
+  END BLOCK label833;
+  label834 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (7) <= GUARDED '0';
+  END BLOCK label834;
+  label835 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (8) <= GUARDED '0';
+  END BLOCK label835;
+  label836 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (9) <= GUARDED '0';
+  END BLOCK label836;
+  label837 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (10) <= GUARDED '0';
+  END BLOCK label837;
+  label838 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (11) <= GUARDED '0';
+  END BLOCK label838;
+  label839 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product13 (12) <= GUARDED '0';
+  END BLOCK label839;
+  label840 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (0) <= GUARDED '0';
+  END BLOCK label840;
+  label841 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (1) <= GUARDED '0';
+  END BLOCK label841;
+  label842 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (2) <= GUARDED '0';
+  END BLOCK label842;
+  label843 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (3) <= GUARDED '0';
+  END BLOCK label843;
+  label844 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (4) <= GUARDED '0';
+  END BLOCK label844;
+  label845 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (5) <= GUARDED '0';
+  END BLOCK label845;
+  label846 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (6) <= GUARDED '0';
+  END BLOCK label846;
+  label847 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (7) <= GUARDED '0';
+  END BLOCK label847;
+  label848 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (8) <= GUARDED '0';
+  END BLOCK label848;
+  label849 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (9) <= GUARDED '0';
+  END BLOCK label849;
+  label850 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (10) <= GUARDED '0';
+  END BLOCK label850;
+  label851 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (11) <= GUARDED '0';
+  END BLOCK label851;
+  label852 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product14 (12) <= GUARDED '0';
+  END BLOCK label852;
+  label853 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (0) <= GUARDED '0';
+  END BLOCK label853;
+  label854 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (1) <= GUARDED '0';
+  END BLOCK label854;
+  label855 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (2) <= GUARDED '0';
+  END BLOCK label855;
+  label856 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (3) <= GUARDED (rtlcarry_153_3 XOR rtlcarry_15_3 XOR 
+rtlcarry_10_3);
+  END BLOCK label856;
+  label857 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (4) <= GUARDED rtlcarry_153_4;
+  END BLOCK label857;
+  label858 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (5) <= GUARDED rtlcarry_153_5;
+  END BLOCK label858;
+  label859 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (6) <= GUARDED rtlcarry_153_6;
+  END BLOCK label859;
+  label860 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (7) <= GUARDED rtlcarry_153_7;
+  END BLOCK label860;
+  label861 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (8) <= GUARDED rtlcarry_153_8;
+  END BLOCK label861;
+  label862 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (9) <= GUARDED rtlcarry_153_9;
+  END BLOCK label862;
+  label863 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (10) <= GUARDED (rtlcarry_153_10 XOR aux39);
+  END BLOCK label863;
+  label864 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (11) <= GUARDED (rtlcarry_153_11 XOR aux40);
+  END BLOCK label864;
+  label865 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (12) <= GUARDED ((rtlcarry_153_11 AND aux40) OR (rtlcarry_10_11 
+AND rtlcarry_15_11));
+  END BLOCK label865;
+  label866 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (13) <= GUARDED '0';
+  END BLOCK label866;
+  label867 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (14) <= GUARDED '0';
+  END BLOCK label867;
+  label868 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp_1 (15) <= GUARDED '0';
+  END BLOCK label868;
+  label869 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (0) <= GUARDED mul_temp_1(0);
+  END BLOCK label869;
+  label870 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (1) <= GUARDED mul_temp_1(1);
+  END BLOCK label870;
+  label871 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (2) <= GUARDED mul_temp_1(2);
+  END BLOCK label871;
+  label872 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (3) <= GUARDED mul_temp_1(3);
+  END BLOCK label872;
+  label873 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (4) <= GUARDED mul_temp_1(4);
+  END BLOCK label873;
+  label874 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (5) <= GUARDED mul_temp_1(5);
+  END BLOCK label874;
+  label875 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (6) <= GUARDED mul_temp_1(6);
+  END BLOCK label875;
+  label876 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (7) <= GUARDED mul_temp_1(7);
+  END BLOCK label876;
+  label877 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (8) <= GUARDED mul_temp_1(8);
+  END BLOCK label877;
+  label878 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (9) <= GUARDED mul_temp_1(9);
+  END BLOCK label878;
+  label879 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (10) <= GUARDED mul_temp_1(10);
+  END BLOCK label879;
+  label880 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (11) <= GUARDED mul_temp_1(11);
+  END BLOCK label880;
+  label881 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product15 (12) <= GUARDED mul_temp_1(12);
+  END BLOCK label881;
+  label882 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (0) <= GUARDED '0';
+  END BLOCK label882;
+  label883 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (1) <= GUARDED '0';
+  END BLOCK label883;
+  label884 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (2) <= GUARDED '0';
+  END BLOCK label884;
+  label885 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (3) <= GUARDED (rtlcarry_154_3 XOR rtlcarry_5_3 XOR rtlcarry_0_3
+);
+  END BLOCK label885;
+  label886 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (4) <= GUARDED rtlcarry_154_4;
+  END BLOCK label886;
+  label887 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (5) <= GUARDED rtlcarry_154_5;
+  END BLOCK label887;
+  label888 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (6) <= GUARDED rtlcarry_154_6;
+  END BLOCK label888;
+  label889 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (7) <= GUARDED rtlcarry_154_7;
+  END BLOCK label889;
+  label890 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (8) <= GUARDED rtlcarry_154_8;
+  END BLOCK label890;
+  label891 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (9) <= GUARDED rtlcarry_154_9;
+  END BLOCK label891;
+  label892 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (10) <= GUARDED rtlcarry_154_10;
+  END BLOCK label892;
+  label893 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (11) <= GUARDED (rtlcarry_154_11 XOR rtlcarry_5_11 XOR 
+rtlcarry_0_11);
+  END BLOCK label893;
+  label894 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (12) <= GUARDED (((rtlcarry_154_11 OR rtlcarry_5_11) AND 
+rtlcarry_0_11) OR (rtlcarry_5_11 AND (rtlcarry_154_11 OR NOT(
+rtlcarry_5_11)) AND NOT(rtlcarry_0_11)));
+  END BLOCK label894;
+  label895 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (13) <= GUARDED '0';
+  END BLOCK label895;
+  label896 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (14) <= GUARDED '0';
+  END BLOCK label896;
+  label897 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    mul_temp (15) <= GUARDED '0';
+  END BLOCK label897;
+  label898 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (0) <= GUARDED mul_temp(0);
+  END BLOCK label898;
+  label899 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (1) <= GUARDED mul_temp(1);
+  END BLOCK label899;
+  label900 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (2) <= GUARDED mul_temp(2);
+  END BLOCK label900;
+  label901 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (3) <= GUARDED mul_temp(3);
+  END BLOCK label901;
+  label902 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (4) <= GUARDED mul_temp(4);
+  END BLOCK label902;
+  label903 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (5) <= GUARDED mul_temp(5);
+  END BLOCK label903;
+  label904 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (6) <= GUARDED mul_temp(6);
+  END BLOCK label904;
+  label905 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (7) <= GUARDED mul_temp(7);
+  END BLOCK label905;
+  label906 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (8) <= GUARDED mul_temp(8);
+  END BLOCK label906;
+  label907 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (9) <= GUARDED mul_temp(9);
+  END BLOCK label907;
+  label908 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (10) <= GUARDED mul_temp(10);
+  END BLOCK label908;
+  label909 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (11) <= GUARDED mul_temp(11);
+  END BLOCK label909;
+  label910 : BLOCK ((NOT((clk'STABLE)) AND clk) = '1')
+  BEGIN
+    product16 (12) <= GUARDED mul_temp(12);
+  END BLOCK label910;
+
+filter_out (0) <= output_register(0);
+
+filter_out (1) <= output_register(1);
+
+filter_out (2) <= output_register(2);
+
+filter_out (3) <= output_register(3);
+
+filter_out (4) <= output_register(4);
+
+filter_out (5) <= output_register(5);
+
+filter_out (6) <= output_register(6);
+
+filter_out (7) <= output_register(7);
+
+filter_out (8) <= output_register(8);
+
+filter_out (9) <= output_register(9);
+
+filter_out (10) <= output_register(10);
+
+filter_out (11) <= output_register(11);
+
+filter_out (12) <= output_register(12);
+
+filter_out (13) <= output_register(13);
+
+filter_out (14) <= output_register(14);
+
+filter_out (15) <= output_register(15);
+END;
